@@ -1,0 +1,85 @@
+﻿@using Orchard.ContentManagement
+
+@{
+    var userCanRegister = WorkContext.CurrentSite.As<Orchard.Users.Models.RegistrationSettingsPart>().UsersCanRegister;
+    var enableLostPassword = WorkContext.CurrentSite.As<Orchard.Users.Models.RegistrationSettingsPart>().EnableLostPassword;
+}
+
+@*<h1 class="page-title">@Html.TitleForPage((string)Model.Title)</h1>*@
+@*<p>
+        @T("Please enter your email and password.")
+        @if(userCanRegister) { @Html.ActionLink(T("Register").Text, "Register", "Account") @T(" if you don't have an account.") }
+        @if(enableLostPassword) { <text> </text> @Html.ActionLink(T("Lost your Password?").Text, "RequestLostPassword") }
+    </p>*@
+
+@Html.ValidationSummary(T("Login or Registration was unsuccessful. Please correct the errors and try again.").ToString())
+
+
+<div class="fifty-fifty-layout">
+    <div id="fifty-fifty-first">
+        <h3>Log On</h3>
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("LogOn", new { ReturnUrl = Request.QueryString["ReturnUrl"] })))
+        {
+            <div class="form-group">
+                <label for="username-email">@T("Email")</label>
+                @Html.TextBox("userNameOrEmail", "", new { id = "username-email", autofocus = "autofocus", @class = "form-control text-box single-line" })
+                @Html.ValidationMessage("userNameOrEmail")
+            </div>
+            <div class="form-group">
+                <label for="password">@T("Password")</label>
+                @Html.Password("password", "", new { @class = "form-control text-box single-line" })
+                @Html.ValidationMessage("password")
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("rememberMe")<label class="forcheckbox" for="remember-me">@T("Remember Me")</label>
+            </div>
+
+            <div class="form-group">
+                @if (enableLostPassword)
+                {@Html.ActionLink(T("Lost your Password?").Text, "RequestLostPassword") }
+            </div>
+
+            <div class="btn-group btn-group-lg">
+                <button class="btn btn-default" type="submit">@T("Sign In")</button>
+            </div>
+
+        }
+    </div>
+
+    <div id="fifty-fifty-second">
+        <h3>Register</h3>
+        @*<h1>@Html.TitleForPage(T("Create a New Sort Arena Account").ToString())</h1>*@
+        <p>
+            @T("Use the form below to create a new account.")
+        @T("Passwords are required to be a minimum of {0} characters in length.", ViewData["PasswordLength"])
+    </p>
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Register", "Account", new { area = "SortArena", ReturnUrl = Request.QueryString["ReturnUrl"] })))
+    {
+
+        <div class="form-group">
+            <label for="email">@T("Email:")</label>
+            @Html.TextBox("email", "", new { @class = "form-control text-box single-line" })
+            @Html.ValidationMessage("email")
+        </div>
+        <div class="form-group">
+            <label for="password">@T("Password:")</label>
+            @Html.Password("password", "", new { @class = "form-control text-box single-line" })
+            @Html.ValidationMessage("password")
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">@T("Confirm password:")</label>
+            @Html.Password("confirmPassword", "", new { @class = "form-control text-box single-line" })
+            @Html.ValidationMessage("confirmPassword")
+        </div>
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-default" type="submit">@T("Register")</button>
+        </div>
+
+    }
+
+</div>
+</div>
+
+
+
