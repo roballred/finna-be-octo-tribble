@@ -38,6 +38,8 @@ namespace AREA.Membership.Models
             this.Suffix = String.Empty;
             this.Nickname = String.Empty;
 
+            this.Gender = 0;
+
         }
 
 
@@ -52,6 +54,10 @@ namespace AREA.Membership.Models
         public virtual string Suffix { get; set; }
 
         public virtual string Nickname { get; set; }
+
+        public virtual string Title { get; set; }
+
+        public virtual int Gender { get; set; }
 
         public virtual DateTime ModifiedOn { get; set; }
 
@@ -119,10 +125,22 @@ namespace AREA.Membership.Models
 
         public string Nickname
         {
-
             get { return Record.Nickname; }
             set { Record.Nickname = value; }
         }
+
+        public string Title
+        {
+            get { return Record.Title; }
+            set { Record.Title = value; }
+        }
+
+        public int Gender
+        {
+            get { return Record.Gender; }
+            set { Record.Gender = value; }
+        }
+
 
         public DateTime ModifiedOn
         {
@@ -193,6 +211,8 @@ namespace AREA.Membership.Models
             this.LastName = src.LastName;
             this.Suffix = src.Suffix;
             this.Nickname = src.Nickname;
+            this.Title = src.Title;
+            this.Gender = src.Gender;
 
         }
 

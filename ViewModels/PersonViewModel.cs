@@ -24,6 +24,7 @@ namespace AREA.Membership.ViewModels
             this.LastName = String.Empty;
             this.Suffix = String.Empty;
             this.Nickname = String.Empty;
+            this.Title = string.Empty;
 
         }
         public int Id { get; set; }
@@ -33,6 +34,8 @@ namespace AREA.Membership.ViewModels
         public string Nickname { get; set; }
         public string Prefix { get; set; }
         public string Suffix { get; set; }
+        public string Title { get; set; }
+        public int Gender { get; set; }
         public DateTime Birthday { get; set; }
 
 
@@ -50,6 +53,8 @@ namespace AREA.Membership.ViewModels
             this.LastName = src.LastName;
             this.Suffix = src.Suffix;
             this.Nickname = src.Nickname;
+            this.Title = src.Title;
+            this.Gender = src.Gender;
 
         }
 

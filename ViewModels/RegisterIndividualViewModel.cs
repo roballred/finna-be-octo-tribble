@@ -1,4 +1,5 @@
 ﻿using AREA.Membership.Models;
+using Orchard.Taxonomies.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace AREA.Membership.ViewModels
         public PersonViewModel Person {get; set;}
         public AddressViewModel Address { get; set; }
         public ContactInformationViewModel ContactInfo { get; set; }
+
+        public IEnumerable<CategoryViewModel> Category { get; set; }
 
         public IEnumerable<States> States { get; set; }
     }

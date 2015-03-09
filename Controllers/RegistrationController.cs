@@ -5,6 +5,8 @@ using AREA.Membership.ViewModels;
 using Orchard;
 using Orchard.Mvc;
 using Orchard.Security;
+using Orchard.Taxonomies.Models;
+using Orchard.Taxonomies.Services;
 using Orchard.Themes;
 using System;
 using System.Collections.Generic;
@@ -18,15 +20,31 @@ namespace AREA.Membership.Controllers
     {
         private readonly IAddressesService m_objAddressesService;
         private readonly IMembersService m_objMembersService;
+        private IOrchardServices _orchardServices;
+        private ITaxonomyService _taxonomyService;
+
 
         public RegistrationController(IOrchardServices orchardServices,
             IAddressesService objAddressesService,
-            IMembersService objMembersService)
+            IMembersService objMembersService,
+            ITaxonomyService taxonomyService)
             : base(orchardServices)
         {
             m_objAddressesService = objAddressesService;
             m_objMembersService = objMembersService;
+            _taxonomyService = taxonomyService;
         }
+
+
+        [Themed]
+        public string Index()
+        {
+
+            m_objMembersService.Testing();
+            return"junk";
+
+        }
+
 
         ///-------------------------------------------------------------------------
         /// <summary>
@@ -46,6 +64,24 @@ namespace AREA.Membership.Controllers
             {
                 objRegisterProducerViewModel.ContactInfo.EmailAddress = userItem.Email;
             }
+
+            var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
+                        
+            var terms =_taxonomyService.GetTerms(taxonomy.Id);
+
+            List<CategoryViewModel> colCategories = new List<CategoryViewModel>();
+
+            foreach(TermPart eachTerm in terms)
+            {
+                CategoryViewModel objCategoryViewModel = new CategoryViewModel();
+
+                objCategoryViewModel.Name = eachTerm.Name;
+                colCategories.Add(objCategoryViewModel);
+
+            }
+
+            objRegisterProducerViewModel.Category = colCategories;
+
 
             return View("Registration.Individual", objRegisterProducerViewModel);
 
@@ -78,6 +114,9 @@ namespace AREA.Membership.Controllers
                 member.Person.Copy(objRegisterProducerViewModel.Person);
                 member.Address.Copy(objRegisterProducerViewModel.Address);
                 member.ContactInformation.Copy(objRegisterProducerViewModel.ContactInfo);
+
+                //save taxonomy
+
 
                 IUser userItem = this.OrchardServices.WorkContext.CurrentUser;
                 if (userItem is IUser)

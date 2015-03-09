@@ -128,10 +128,11 @@ namespace AREA.Membership
                 .Column<string>("LastName", column => column.WithLength(128).NotNull())
                 .Column<string>("Suffix", column => column.WithLength(32).NotNull())
                 .Column<string>("Nickname", column => column.WithLength(64).NotNull())
+                .Column<string>("Title", column => column.WithLength(64).NotNull())                
+                .Column<int>("Gender")
                 .Column<DateTime>("CreatedOn")
                 .Column<DateTime>("ModifiedOn")
                 .Column<DateTime>("Birthday")
-                //.Column<int>("Gender")
                 );
 
 
@@ -217,12 +218,20 @@ namespace AREA.Membership
 
             ContentDefinitionManager.AlterTypeDefinition("PersonServiceItem", type => type.WithPart("PersonsPart"));
 
-
             #endregion
 
             return 1;
         }
 
+        //public int UpdateFrom1()
+        //{
+        //    ContentDefinitionManager.AlterTypeDefinition("TestingContentItem", cfg => cfg
+        //        .WithPart("PersonsPart")
+        //        .WithPart("TaxonomyPart")
+        //        );
+
+        //    return 2;
+        //}
         //public int UpdateFrom3()
         //{
         //    SchemaBuilder.CreateTable("TitlePartRecord",

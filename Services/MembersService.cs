@@ -1,8 +1,12 @@
 ﻿using AREA.Membership.Models;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Core.Title.Models;
 using Orchard.Data;
 using Orchard.Security;
+using Orchard.Taxonomies.Models;
+using Orchard.Taxonomies.Services;
+using Orchard.Taxonomies.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +24,7 @@ namespace AREA.Membership.Services
     {
 
         MembersPart Factory();
-
+        void Testing();
     }
 
 
@@ -32,9 +36,12 @@ namespace AREA.Membership.Services
     public class MembersService : IMembersService
     {
         private IOrchardServices _orchardServices;
-        public MembersService(IOrchardServices services)
+        private ITaxonomyService _taxonomyService;
+        public MembersService(IOrchardServices services,
+            ITaxonomyService taxonomyService)
         {
             _orchardServices = services;
+            _taxonomyService = taxonomyService;
         }
 
 
@@ -54,6 +61,55 @@ namespace AREA.Membership.Services
 
             return objMemberPart;
 
+        }
+
+        public void Testing()
+        {
+            //var blogPosts = _contentManager.Query<BlogPostPart>().Where<CommonPartRecord>(bp => bp.Container.Id == blogPart.Id);
+
+            //var objServiceItem = _orchardServices.ContentManager.New("TestingContentItem");
+            var objServiceItem = _orchardServices.ContentManager.New("AAW2");
+            _orchardServices.ContentManager.Create(objServiceItem, VersionOptions.Published);
+
+            var objTitlePart = objServiceItem.As<TitlePart>();
+            objTitlePart.Title = "HELP";
+            //get taxonomy name Category
+            var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
+
+            //var terms = _taxonomyService.GetTermsForContentItem(objServiceItem.Id, "Category").ToList();
+            var terms = _taxonomyService.GetTerms(taxonomy.Id);
+            var term = _taxonomyService.GetTerm(16);
+            
+            //var term = _taxonomyService.NewTerm(taxonomy);
+            //term.Container = taxonomy.ContentItem;
+            //term.Name = "Pilot";
+            //term.Selectable = true;
+
+            //_taxonomyService.ProcessPath(term);
+            //_orchardServices.ContentManager.Create(term, VersionOptions.Published);
+
+            List<TermPart> objTest = new List<TermPart>();
+            objTest.Add(term);
+
+            //get terms to update content item
+
+            _taxonomyService.UpdateTerms(objServiceItem, objTest, "Pilot");
+
+            
+            //TermContentItem
+            //objMemberPart.Terms.Add(test);
+            //var objServiceItem = _orchardServices.ContentManager.Query(VersionOptions.AllVersions, "Testing");
+            //var objServiceItem = _orchardServices.ContentManager.Query<TaxonomyPart, TaxonomyPartRecord>().Where(tst => tst.TermTypeName == "Catigory").List().FirstOrDefault();
+            //var objServiceItem = _orchardServices.ContentManager.Query().ForType("AAW").List().FirstOrDefault();
+            //var objServiceItem = _orchardServices.ContentManager.Query<MembersPart, Members>().Join<TermPartRecord>()
+            //    .Where(r => r.Title == name).Where(tst => tst.TermTypeName == "Catigory").List().FirstOrDefault();
+
+  //          _cms.Query<TagsPart, TagsPartRecord>()
+  //29:                  .Where(tpr => tpr.Tags.Any(t => tags.Contains(t.TagRecord.TagName)))
+            //_orchardServices.ContentManager.Create(objServiceItem, VersionOptions.Published);
+            //var objTaxonomy = _taxonomyService.
+            //var objMemberPart = objServiceItem.As<TaxonomyPart>();
+            var testId = "";
         }
 
 
