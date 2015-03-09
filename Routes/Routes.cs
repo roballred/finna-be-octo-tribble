@@ -18,24 +18,35 @@ namespace AREA.Membership.Routes
 
         public IEnumerable<RouteDescriptor> GetRoutes()
         {
-
             return new[] {
-                new HttpRouteDescriptor {
-
-                   Name = "MembershipRoute", // if named route, see Test 3 below
-                   Priority = -9, // can be ommited, but if used, needs to be > -10
-                    RouteTemplate = "api/members/{controller}/{id}",
-                    Defaults = new { area = "Membership", id = RouteParameter.Optional },
+            new HttpRouteDescriptor {
+                Name = "MembershipRoute",
+                Priority = 5,
+                RouteTemplate = "api/membership/{controller}/{id}",
+                Defaults = new {
+                    area = "Area.Membership",
+                    id = RouteParameter.Optional
                 }
-                //new HttpRouteDescriptor {
+            }
+        };
+           // return new[] {
+           //     new HttpRouteDescriptor {
 
-                //   Name = "ProducerRouteInvoke", // if named route, see Test 3 below
-                //   Priority = -9, // can be ommited, but if used, needs to be > -10
-                //    RouteTemplate = "api/Producer/{controller}/invoke",
-                //    Defaults = new { area = "Producer", id = RouteParameter.Optional },
+           //        Name = "MembershipRoute", // if named route, see Test 3 below
+           //        Priority = -9, // can be ommited, but if used, needs to be > -10
+           //         RouteTemplate = "api/membership/{controller}/{id}",
+           //         Defaults = new { area = "Membership", id = RouteParameter.Optional },
+           //     }
 
-                //}
-           };
+           //     //new HttpRouteDescriptor {
+
+           //     //   Name = "ProducerRouteInvoke", // if named route, see Test 3 below
+           //     //   Priority = -9, // can be ommited, but if used, needs to be > -10
+           //     //    RouteTemplate = "api/Producer/{controller}/invoke",
+           //     //    Defaults = new { area = "Producer", id = RouteParameter.Optional },
+
+           //     //}
+           //};
 
         }
 

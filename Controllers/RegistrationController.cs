@@ -66,21 +66,25 @@ namespace AREA.Membership.Controllers
             }
 
             var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
-                        
-            var terms =_taxonomyService.GetTerms(taxonomy.Id);
-
-            List<CategoryViewModel> colCategories = new List<CategoryViewModel>();
-
-            foreach(TermPart eachTerm in terms)
+                     
+            if(taxonomy != null)
             {
-                CategoryViewModel objCategoryViewModel = new CategoryViewModel();
+                var terms = _taxonomyService.GetTerms(taxonomy.Id);
 
-                objCategoryViewModel.Name = eachTerm.Name;
-                colCategories.Add(objCategoryViewModel);
+                List<CategoryViewModel> colCategories = new List<CategoryViewModel>();
+
+                foreach (TermPart eachTerm in terms)
+                {
+                    CategoryViewModel objCategoryViewModel = new CategoryViewModel();
+
+                    objCategoryViewModel.Name = eachTerm.Name;
+                    colCategories.Add(objCategoryViewModel);
+
+                }
+
+                objRegisterProducerViewModel.Category = colCategories;
 
             }
-
-            objRegisterProducerViewModel.Category = colCategories;
 
 
             return View("Registration.Individual", objRegisterProducerViewModel);

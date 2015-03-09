@@ -105,7 +105,7 @@
                         </div>
 
                         <div class="btn-group btn-group-lg">
-                            <button class="btn btn-default" ng-disabled="IsUploadingData == true" type="button" ng-click="">@T("Save")</button>
+                            <button class="btn btn-default" ng-disabled="IsUploadingData == true" type="button" ng-click="PostData()">@T("Save")</button>
                             <img ng-show="IsUploadingData" src="http://x4wordpress.cloudapp.net/wp-content/uploads/2014/10/spinner.gif" />
 
                         </div>
@@ -128,16 +128,19 @@
 
 
 
-        var registrationApp = angular.module('registrationApp', []);
+    var registrationApp = angular.module('registrationApp', []);
 
-        registrationApp.controller('registrationCtrl',  ['$scope', '$http', function ($scope, $http) {
+    registrationApp.controller('registrationCtrl',  ['$scope', '$http', function ($scope, $http) {
 
 
-            $scope.IsUploadingData = false;
-            $scope.Registration = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
-            $scope.Countries = ["United States", "Canada", "Mexico"];
-            var szPostData = "@Url.HttpRouteUrl("MembershipRoute", new { controller = "IndividualRegistrationData" })";
-            var szFinishedRedirect = "@Url.Action("Index", "Dashboard", new { area = "Membership" })";
+        $scope.IsUploadingData = false;
+        $scope.Registration = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        $scope.Countries = ["United States", "Canada", "Mexico"];
+            
+        var szPostData = "@Url.HttpRouteUrl("MembershipRoute", new { controller = "IndividualRegistrationData" })";
+        var szPostData1 = "@Url.Action("Post", "IndividualRegistrationData", new { httproute = true, area = "Area.Membership" })";
+
+        var szFinishedRedirect = "@Url.Action("Index", "Dashboard", new {area = "Membership" })";
 
             $scope.PostData = function () {
 
