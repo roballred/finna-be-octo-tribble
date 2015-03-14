@@ -120,67 +120,66 @@ namespace AREA.Membership.Models
 
         private void SetupBusiness(ActivatedContentContext context, BusinessPart part)
         {
-            //part.AddressField.Loader(address =>
-            //{
-            //    var addressContentItem = _contentManager.Get<AddressesPart>(part.Record.AddressId);
 
-            //    if (addressContentItem == null)
-            //    {
-            //        addressContentItem = _contentManager.Create<AddressesPart>("AddressServiceItem", VersionOptions.Published);
-            //        part.Record.AddressId = addressContentItem.Id;
-            //    }
-            //    return addressContentItem;
+            part.AddressField.Loader(() =>
+            {
 
+                var addressContentItem = _contentManager.Get<AddressesPart>(part.Record.AddressId);
+                if (addressContentItem == null)
+                {
+                    addressContentItem = _contentManager.Create<AddressesPart>("AddressServiceItem", VersionOptions.Published);
+                    part.Record.AddressId = addressContentItem.Id;
+                }
+                return addressContentItem;
+            });
 
-            //});
-
-            //part.AddressField.Setter(address =>
-            //{
-            //    part.Record.AddressId = address != null ? address.Id : default(int);
-            //    return address;
-            //});
-
-
-            //part.ContactInformationField.Loader(contact =>
-            //{
-            //    var contactsContentItem = _contentManager.Get<ContactInformationPart>(part.Record.ContactInformationId);
-
-            //    if (contactsContentItem == null)
-            //    {
-            //        contactsContentItem = _contentManager.Create<ContactInformationPart>("ContactInformationServiceItem", VersionOptions.Published);
-            //        part.Record.ContactInformationId = contactsContentItem.Id;
-            //    }
-            //    return contactsContentItem;
+            part.AddressField.Setter(address =>
+            {
+                part.Record.AddressId = address != null ? address.Id : default(int);
+                return address;
+            });
 
 
-            //});
+            part.ContactInformationField.Loader(() =>
+            {
+                var contactsContentItem = _contentManager.Get<ContactInformationPart>(part.Record.ContactInformationId);
 
-            //part.ContactInformationField.Setter(contact =>
-            //{
-            //    part.Record.ContactInformationId = contact != null ? contact.Id : default(int);
-            //    return contact;
-            //});
-
-
-            //part.PersonField.Loader(person =>
-            //{
-            //    var personItem = _contentManager.Get<PersonsPart>(part.Record.PersonId);
-
-            //    if (personItem == null)
-            //    {
-            //        personItem = _contentManager.Create<PersonsPart>("PersonServiceItem", VersionOptions.Published);
-            //        part.Record.PersonId = personItem.Id;
-            //    }
-            //    return personItem;
+                if (contactsContentItem == null)
+                {
+                    contactsContentItem = _contentManager.Create<ContactInformationPart>("ContactInformationServiceItem", VersionOptions.Published);
+                    part.Record.ContactInformationId = contactsContentItem.Id;
+                }
+                return contactsContentItem;
 
 
-            //});
+            });
 
-            //part.PersonField.Setter(person =>
-            //{
-            //    part.Record.PersonId = person != null ? person.Id : default(int);
-            //    return person;
-            //});
+            part.ContactInformationField.Setter(contact =>
+            {
+                part.Record.ContactInformationId = contact != null ? contact.Id : default(int);
+                return contact;
+            });
+
+
+            part.PersonField.Loader(() =>
+            {
+                var personItem = _contentManager.Get<PersonsPart>(part.Record.PersonId);
+
+                if (personItem == null)
+                {
+                    personItem = _contentManager.Create<PersonsPart>("PersonServiceItem", VersionOptions.Published);
+                    part.Record.PersonId = personItem.Id;
+                }
+                return personItem;
+
+
+            });
+
+            part.PersonField.Setter(person =>
+            {
+                part.Record.PersonId = person != null ? person.Id : default(int);
+                return person;
+            });
 
 
         }

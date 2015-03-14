@@ -30,7 +30,7 @@ namespace AREA.Membership.Models
             this.ModifiedOn = DateTime.UtcNow;
             this.CreatedOn = DateTime.UtcNow;
             this.Birthday = DateTime.UtcNow;
-
+            this.Title = string.Empty;
             this.Prefix = String.Empty;
             this.FirstName = String.Empty;
             this.MiddleName = String.Empty;

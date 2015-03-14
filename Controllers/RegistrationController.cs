@@ -65,7 +65,7 @@ namespace AREA.Membership.Controllers
                 objRegisterProducerViewModel.ContactInfo.EmailAddress = userItem.Email;
             }
 
-            var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
+            var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
                      
             if(taxonomy != null)
             {
@@ -91,6 +91,47 @@ namespace AREA.Membership.Controllers
 
         }
 
+
+
+        ///-------------------------------------------------------------------------
+        /// <summary>
+        /// Index
+        /// </summary>
+        /// 
+        [Themed]
+        public ActionResult Business()
+        {
+            if (!IsAuthorized()) return new HttpUnauthorizedResult();
+
+            RegisterBusinessViewModel objRegisterBusinessViewModel = new RegisterBusinessViewModel();
+            objRegisterBusinessViewModel.States = m_objAddressesService.GetStates();
+            objRegisterBusinessViewModel.Address.State = string.Empty;
+
+            var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
+
+            if (taxonomy != null)
+            {
+                var terms = _taxonomyService.GetTerms(taxonomy.Id);
+
+                List<CategoryViewModel> colCategories = new List<CategoryViewModel>();
+
+                foreach (TermPart eachTerm in terms)
+                {
+                    CategoryViewModel objCategoryViewModel = new CategoryViewModel();
+
+                    objCategoryViewModel.Name = eachTerm.Name;
+                    colCategories.Add(objCategoryViewModel);
+
+                }
+
+                objRegisterBusinessViewModel.Category = colCategories;
+
+            }
+
+
+            return View("Registration.Business", objRegisterBusinessViewModel);
+
+        }
 
 
         ///-------------------------------------------------------------------------

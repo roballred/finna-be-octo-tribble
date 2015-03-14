@@ -141,6 +141,7 @@
   <ItemGroup>
     <Compile Include="Base\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BusinessRegistrationDataController.cs" />
     <Compile Include="Controllers\IndividualRegistrationDataController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\testController.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ContactInformationViewModel.cs" />
     <Compile Include="ViewModels\PersonViewModel.cs" />
+    <Compile Include="ViewModels\RegisterBusinessViewModel.cs" />
     <Compile Include="ViewModels\RegisterIndividualViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +178,9 @@
   <ItemGroup>
     <Content Include="Views\LogOn.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Registration.Business.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

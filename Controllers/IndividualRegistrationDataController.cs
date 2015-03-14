@@ -1,6 +1,8 @@
 ﻿using AREA.Membership.Services;
 using AREA.Membership.ViewModels;
 using Orchard;
+using Orchard.ContentManagement;
+using Orchard.Taxonomies.Models;
 using Orchard.Taxonomies.Services;
 using System;
 using System.Collections.Generic;
@@ -39,6 +41,7 @@ namespace AREA.Membership.Controllers
         [HttpPost]
         public HttpResponseMessage Post()
         {
+            var response = Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             string szMessageBody = Request.Content.ReadAsStringAsync().Result;
 
             RegisterIndividualViewModel objRegisterProducerViewModel = Newtonsoft.Json.JsonConvert.DeserializeObject<RegisterIndividualViewModel>(szMessageBody);
@@ -50,19 +53,42 @@ namespace AREA.Membership.Controllers
                 member.Address.Copy(objRegisterProducerViewModel.Address);
                 member.ContactInformation.Copy(objRegisterProducerViewModel.ContactInfo);
 
+                var memberTermPart = member.ContentItem.As<TermsPart>();
+                var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
+
+                var categoriesSelected = objRegisterProducerViewModel.Category.Where(x => x.isSelected == true).ToList();
+                //var terms = _taxonomyService.GetTermsForContentItem(objServiceItem.Id, "Category").ToList();
+                var terms = _taxonomyService.GetTerms(taxonomy.Id);
+
+                foreach(CategoryViewModel eachCategory in categoriesSelected)
+                {
+
+                    var term = terms.Where(x => x.Name == eachCategory.Name).ToList().FirstOrDefault();
+
+                    memberTermPart.Terms.Add(new TermContentItem
+                    {
+                        TermsPartRecord = memberTermPart.Record,
+                        TermRecord = term.Record,
+                        Field = term.Name
+                    });
+
+                }
+
                 //save taxonomy
+                //var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
+                //var terms = taxonomy.Terms;
 
-
+                //var memberTaxonomy = member.ContentItem.As<TermsField>();
                 //IUser userItem = _orchardServices.WorkContext.CurrentUser;
                 //if (userItem is IUser)
                 //{
                 //    var test = userItem.Email;
                 //}
-
+                response = Request.CreateResponse(HttpStatusCode.OK);
             }
 
 
-            return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+            return response;
         }
 
     }
