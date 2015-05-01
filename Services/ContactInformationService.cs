@@ -5,9 +5,9 @@ using System.Linq;
 using System.Web;
 using Orchard.ContentManagement;
 using Orchard.Data;
-using AREA.Membership.Models;
+using WAA.Models;
 
-namespace AREA.Membership.Services
+namespace WAA.Services
 {
     ///-------------------------------------------------------------------------
     /// <summary>

@@ -1,11 +1,11 @@
-﻿using AREA.Membership.Models;
+﻿using WAA.Models;
 using Orchard.Taxonomies.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AREA.Membership.ViewModels
+namespace WAA.ViewModels
 {
     public class RegisterIndividualViewModel : BaseViewModel
     {
@@ -16,6 +16,10 @@ namespace AREA.Membership.ViewModels
             this.Address = new AddressViewModel();
             this.ContactInfo = new ContactInformationViewModel();
         }
+
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
+
         public PersonViewModel Person {get; set;}
         public AddressViewModel Address { get; set; }
         public ContactInformationViewModel ContactInfo { get; set; }

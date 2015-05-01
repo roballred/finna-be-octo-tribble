@@ -9,9 +9,9 @@ using System.Linq;
 using System.Web;
 using Orchard.Data;
 using System.Data;
-using AREA.Membership.Models;
+using WAA.Models;
 
-namespace AREA.Membership
+namespace WAA
 {
 
 
@@ -185,14 +185,14 @@ namespace AREA.Membership
                 _stateRepository.Create(state);
             }
 
-            //SchemaBuilder.CreateTable("MemberLookup",
-            //    table => table
-            //        .Column<int>("Id", column => column.PrimaryKey().Identity())
-            //        .Column<string>("EmailAddress", column => column.WithLength(254).NotNull())
-            //        .Column<int>("MemberId")
-            //        .Column<int>("BusinessId")
+            SchemaBuilder.CreateTable("MemberLookup",
+                table => table
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
+                    .Column<string>("EmailAddress", column => column.WithLength(254).NotNull())
+                    .Column<int>("MemberId")
+                    .Column<int>("BusinessId")
 
-            //    );
+                );
 
 
 

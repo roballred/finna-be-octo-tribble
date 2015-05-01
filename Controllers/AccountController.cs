@@ -19,7 +19,7 @@ using Orchard;
 using Orchard.Environment.Extensions;
 
 
-namespace AREA.Membership.Controllers
+namespace WAA.Controllers
 {
     //[OrchardSuppressDependency("Orchard.Users.Controllers.AccountController")]
     public class AccountController : Controller

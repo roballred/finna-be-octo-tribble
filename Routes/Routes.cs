@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Web.Http;
 
 
-namespace AREA.Membership.Routes
+namespace WAA.Routes
 {
     public class HttpRoutes : IHttpRouteProvider
     {
@@ -24,7 +24,7 @@ namespace AREA.Membership.Routes
                 Priority = 5,
                 RouteTemplate = "api/membership/{controller}/{id}",
                 Defaults = new {
-                    area = "Area.Membership",
+                    area = "WAA",
                     id = RouteParameter.Optional
                 }
             }

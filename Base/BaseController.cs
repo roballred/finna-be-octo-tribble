@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace AREA.Membership.Base
+namespace WAA.Base
 {
     public class BaseController : Controller
     {

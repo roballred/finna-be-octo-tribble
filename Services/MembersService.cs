@@ -1,4 +1,4 @@
-﻿using AREA.Membership.Models;
+﻿using WAA.Models;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Core.Title.Models;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AREA.Membership.Services
+namespace WAA.Services
 {
 
     ///-------------------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace AREA.Membership.Services
     /// 
     public interface IMembersService : IDependency
     {
-
+        IEnumerable<MembersPart> GetAllMembers();
         MembersPart Factory();
         void Testing();
     }
@@ -36,13 +36,17 @@ namespace AREA.Membership.Services
     /// 
     public class MembersService : IMembersService
     {
+        private readonly IRepository<Members> m_objMembersRepository;
+
         private IOrchardServices _orchardServices;
         private ITaxonomyService _taxonomyService;
         public MembersService(IOrchardServices services,
-            ITaxonomyService taxonomyService)
+            ITaxonomyService taxonomyService,
+            IRepository<Members> objMembersRepository)
         {
             _orchardServices = services;
             _taxonomyService = taxonomyService;
+            m_objMembersRepository = objMembersRepository;
         }
 
 
@@ -62,6 +66,13 @@ namespace AREA.Membership.Services
 
             return objMemberPart;
 
+        }
+
+
+        public IEnumerable<MembersPart> GetAllMembers()
+        {
+
+            return _orchardServices.ContentManager.Query<MembersPart, Members>().List();
         }
 
         public void Testing()

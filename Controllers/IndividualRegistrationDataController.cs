@@ -1,9 +1,11 @@
-﻿using AREA.Membership.Services;
-using AREA.Membership.ViewModels;
+﻿using WAA.Services;
+using WAA.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Security;
 using Orchard.Taxonomies.Models;
 using Orchard.Taxonomies.Services;
+using Orchard.Users.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,25 +14,32 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
-namespace AREA.Membership.Controllers
+namespace WAA.Controllers
 {
     public class IndividualRegistrationDataController : ApiController
     {
                 
         private readonly IAddressesService m_objAddressesService;
         private readonly IMembersService m_objMembersService;
-        private IOrchardServices _orchardServices;
-        private ITaxonomyService _taxonomyService;
+        private readonly IOrchardServices _orchardServices;
+        private readonly ITaxonomyService _taxonomyService;
+        private readonly IMembershipService _membershipService;
+        private readonly IAuthenticationService _authenticationService;
+
 
 
         public IndividualRegistrationDataController(IOrchardServices orchardServices,
+            IAuthenticationService authenticationService,
             IAddressesService objAddressesService,
             IMembersService objMembersService,
+            IMembershipService membershipService,
             ITaxonomyService taxonomyService)
             
         {
+            _authenticationService = authenticationService;
             m_objAddressesService = objAddressesService;
             m_objMembersService = objMembersService;
+            _membershipService = membershipService;
             _taxonomyService = taxonomyService;
             _orchardServices = orchardServices;
 
@@ -44,47 +53,45 @@ namespace AREA.Membership.Controllers
             var response = Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             string szMessageBody = Request.Content.ReadAsStringAsync().Result;
 
-            RegisterIndividualViewModel objRegisterProducerViewModel = Newtonsoft.Json.JsonConvert.DeserializeObject<RegisterIndividualViewModel>(szMessageBody);
+            RegisterIndividualViewModel objRegisterViewModel = Newtonsoft.Json.JsonConvert.DeserializeObject<RegisterIndividualViewModel>(szMessageBody);
 
-            if (objRegisterProducerViewModel != null)
+            if (objRegisterViewModel != null)
             {
-                var member = m_objMembersService.Factory();
-                member.Person.Copy(objRegisterProducerViewModel.Person);
-                member.Address.Copy(objRegisterProducerViewModel.Address);
-                member.ContactInformation.Copy(objRegisterProducerViewModel.ContactInfo);
+                //register the users with orchard
+                var registrationSettings = _orchardServices.WorkContext.CurrentSite.As<RegistrationSettingsPart>();
 
-                var memberTermPart = member.ContentItem.As<TermsPart>();
-                var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
-
-                var categoriesSelected = objRegisterProducerViewModel.Category.Where(x => x.isSelected == true).ToList();
-                //var terms = _taxonomyService.GetTermsForContentItem(objServiceItem.Id, "Category").ToList();
-                var terms = _taxonomyService.GetTerms(taxonomy.Id);
-
-                foreach(CategoryViewModel eachCategory in categoriesSelected)
+                var user = _membershipService.CreateUser(new CreateUserParams(objRegisterViewModel.ContactInfo.EmailAddress, objRegisterViewModel.Password, objRegisterViewModel.ContactInfo.EmailAddress, null, null, false));
+                if(user != null)
                 {
+                    _authenticationService.SignIn(user, false /* createPersistentCookie */);
+                    var member = m_objMembersService.Factory();
+                    member.Person.Copy(objRegisterViewModel.Person);
+                    member.Address.Copy(objRegisterViewModel.Address);
+                    member.ContactInformation.Copy(objRegisterViewModel.ContactInfo);
 
-                    var term = terms.Where(x => x.Name == eachCategory.Name).ToList().FirstOrDefault();
+                    var memberTermPart = member.ContentItem.As<TermsPart>();
+                    var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
 
-                    memberTermPart.Terms.Add(new TermContentItem
+                    var categoriesSelected = objRegisterViewModel.Category.Where(x => x.isSelected == true).ToList();
+                    var terms = _taxonomyService.GetTerms(taxonomy.Id);
+
+                    foreach (CategoryViewModel eachCategory in categoriesSelected)
                     {
-                        TermsPartRecord = memberTermPart.Record,
-                        TermRecord = term.Record,
-                        Field = term.Name
-                    });
+                        var term = terms.Where(x => x.Name == eachCategory.Name).ToList().FirstOrDefault();
+
+                        memberTermPart.Terms.Add(new TermContentItem
+                        {
+                            TermsPartRecord = memberTermPart.Record,
+                            TermRecord = term.Record,
+                            Field = term.Name
+                        });
+
+                    }
+
+                    response = Request.CreateResponse(HttpStatusCode.OK);
 
                 }
 
-                //save taxonomy
-                //var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
-                //var terms = taxonomy.Terms;
-
-                //var memberTaxonomy = member.ContentItem.As<TermsField>();
-                //IUser userItem = _orchardServices.WorkContext.CurrentUser;
-                //if (userItem is IUser)
-                //{
-                //    var test = userItem.Email;
-                //}
-                response = Request.CreateResponse(HttpStatusCode.OK);
             }
 
 

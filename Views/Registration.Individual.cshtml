@@ -1,9 +1,9 @@
-﻿@model AREA.Membership.ViewModels.RegisterIndividualViewModel
+﻿@model WAA.ViewModels.RegisterIndividualViewModel
 @{
-    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    //Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
 
-    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
-    Script.Include("//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js").AtHead();
+    //Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+    //Script.Include("//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js").AtHead();
 
     Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular.min.js").AtHead();
     Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-route.min.js").AtHead();
@@ -45,6 +45,14 @@
                             @*<span class="form-control-feedback" ng-cloak ng-show="!producerRegistration_form.submitted"><strong>*</strong></span>
                     <span class="form-control-feedback" ng-cloak ng-show="producerRegistration_form.EmailAddress.$valid  && producerRegistration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
                     <span class="form-control-feedback" ng-cloak ng-show="producerRegistration_form.EmailAddress.$invalid && producerRegistration_form.submitted"><strong>!</strong></span>*@
+                        </div>
+                        <div class="form-group  has-feedback validation-group" ng-class="{ 'has-error' : individualRegistration_form.password.$invalid,  'has-success' : (individualRegistration_form.password.$valid)}">
+                            <label for="password">Password:</label>
+                            <input name="password" required class="form-control text-box single-line" ng-model="Registration.Password" type="password">
+                        </div>
+                        <div class="form-group  has-feedback validation-group" ng-class="{ 'has-error' : individualRegistration_form.confirmPassword.$invalid || Registration.ConfirmPassword != Registration.Password,  'has-success' : (individualRegistration_form.confirmPassword.$valid && Registration.ConfirmPassword == Registration.Password)}">
+                            <label for="confirmPassword">Confirm password:</label>
+                            <input name="confirmPassword" required class="form-control text-box single-line" ng-model="Registration.ConfirmPassword" type="password">
                         </div>
                         <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : individualRegistration_form.Address1.$invalid,  'has-success' : (individualRegistration_form.Address1.$valid)}">
                             <label>Street Address</label>
@@ -138,9 +146,8 @@
         $scope.Countries = ["United States", "Canada", "Mexico"];
             
         var szPostData = "@Url.HttpRouteUrl("MembershipRoute", new { controller = "IndividualRegistrationData" })";
-        var szPostData1 = "@Url.Action("Post", "IndividualRegistrationData", new { httproute = true, area = "Area.Membership" })";
 
-        var szFinishedRedirect = "@Url.Action("Index", "Dashboard", new {area = "Membership" })";
+        var szFinishedRedirect = "@Url.Action("Index", "Flightdeck", new { area = "WAA" })";
 
             $scope.PostData = function () {
 

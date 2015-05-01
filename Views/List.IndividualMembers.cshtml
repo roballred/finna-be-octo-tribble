@@ -1,0 +1,85 @@
+﻿@model WAA.ViewModels.ListIndividualMembersViewModel
+@{
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js").AtHead();
+    Script.Include("//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js").AtHead();
+
+
+}
+
+
+<div id="layout-dashboard" ng-app="App">
+    <div id="dashboard" ng-controller="Ctrl">
+
+        <div id="dashboard-content">
+
+            <div id="dashboard-control">
+
+                <div id="dashboard-control-content">
+                    <div id="dashboard-control-header">
+                        <p>Your RideRules</p>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
+                            <tr><th>Name</th><th>Summary</th><th>Action</th></tr>
+                            <tr ng-repeat="eachMember in Members">
+                                <td><span>{{eachMember.Person.FirstName}}</span></td>
+                                @*<td>(Max = {{eachRideRules.MaximumRidesAllowed}}, Min = {{eachRideRules.MinimumDrawsRequired}}, Draws = {{eachRideRules.DrawsPerPick}})</td>
+            <td>
+                <a href=@(String.Format("{0}/{1}", Url.Action("Edit", "RideRules", new { area = "Producer" }), "{{eachRideRules.Id}}"))>View</a>
+                | <a ng-click="OnDelete(eachRideRules)">Delete</a>
+            </td>*@
+
+                            </tr>
+
+                        </table>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<script>
+
+    var App = angular.module('App', ['ui.bootstrap']);
+
+    var szFinishedRedirect = "@Url.Action("Index", "Admin", new { area = "WAA" })";
+
+
+    App.controller('Ctrl', ['$scope', function ($scope) {
+
+
+        $scope.Members = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Members));
+
+        $scope.OnDelete = function(eachRideRules) {
+
+            var r = confirm("Are you sure you want to delete this item?");
+            if (r == true) {
+                window.location = "@Url.Action("DeleteFromList", "Admin", new { area = "WAA" })" + "/" + eachRideRules.Id;
+            }
+
+
+
+        }
+    }]);
+
+</script>
+
+
+

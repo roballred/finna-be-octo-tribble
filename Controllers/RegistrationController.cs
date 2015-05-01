@@ -1,7 +1,7 @@
-﻿using AREA.Membership.Base;
-using AREA.Membership.Models;
-using AREA.Membership.Services;
-using AREA.Membership.ViewModels;
+﻿using WAA.Base;
+using WAA.Models;
+using WAA.Services;
+using WAA.ViewModels;
 using Orchard;
 using Orchard.Mvc;
 using Orchard.Security;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace AREA.Membership.Controllers
+namespace WAA.Controllers
 {
     public class RegistrationController : BaseController
     {
@@ -30,6 +30,7 @@ namespace AREA.Membership.Controllers
             ITaxonomyService taxonomyService)
             : base(orchardServices)
         {
+            _orchardServices = orchardServices;
             m_objAddressesService = objAddressesService;
             m_objMembersService = objMembersService;
             _taxonomyService = taxonomyService;
@@ -54,7 +55,13 @@ namespace AREA.Membership.Controllers
         [Themed]
         public ActionResult Individual()
         {
-            if (!IsAuthorized()) return new HttpUnauthorizedResult();
+            //if (!IsAuthorized()) return new HttpUnauthorizedResult();
+            if (IsAuthorized())
+            {
+                //check to see if they  have registered in memberlookup
+            }
+
+
 
             RegisterIndividualViewModel objRegisterProducerViewModel = new RegisterIndividualViewModel();
             objRegisterProducerViewModel.States = m_objAddressesService.GetStates();

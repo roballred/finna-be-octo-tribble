@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace AREA.Membership.Controllers
+namespace WAA.Controllers
 {
     public class TestWebApiController : ApiController
     {

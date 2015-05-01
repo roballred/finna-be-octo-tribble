@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AREA.Membership
+namespace WAA
 {
     public class Permissions : IPermissionProvider
     {
@@ -17,14 +17,15 @@ namespace AREA.Membership
         //public static readonly Permission AccessPersonListDashboard = new Permission { Description = "Access the Person List dashboard", Name = "AccessPersonListDashboard", ImpliedBy = new[] { EditPersonList } };
 
         public static readonly Permission AccessMemberDashboard = new Permission { Description = "Access the Member dashboard", Name = "AccessMemberDashboard" };
+        public static readonly Permission AccessWaaDashboard = new Permission { Description = "Access the WAA dashboard", Name = "AccessWaaDashboard" };
 
 
         public IEnumerable<Permission> GetPermissions()
         {
             return new[]
             {
-                AccessMemberDashboard
-                //AccessPlayerDashboard
+                AccessMemberDashboard,
+                AccessWaaDashboard
             };
         }
 
@@ -33,13 +34,10 @@ namespace AREA.Membership
             // Giving some defaults: which user groups should possess which permissions
             return new[]
             {
-                //new PermissionStereotype
-                //{
-                //    // Administrators will have all the permissions by default.
-                //    Name = "Administrator",
-                //    // Since AccessPersonListDashboard is implied by EditPersonList we don't have to list the former here.
-                //    Permissions = new[] { EditPersonList }
-                //},
+                new PermissionStereotype {
+                    Name = "Administrator",
+                    Permissions = new[] {AccessWaaDashboard}
+                },
                 new PermissionStereotype
                 {
                     Name = "Authenticated",

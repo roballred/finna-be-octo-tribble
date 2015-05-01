@@ -1,5 +1,5 @@
-﻿using AREA.Membership.Services;
-using AREA.Membership.ViewModels;
+﻿using WAA.Services;
+using WAA.ViewModels;
 using Orchard;
 using Orchard.Taxonomies.Services;
 using System;
@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace AREA.Membership.Controllers
+namespace WAA.Controllers
 {
     public class BusinessRegistrationDataController : ApiController
     {

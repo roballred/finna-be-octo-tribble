@@ -1,5 +1,5 @@
 ﻿
-using AREA.Membership.ViewModels;
+using WAA.ViewModels;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.Records;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AREA.Membership.Models
+namespace WAA.Models
 {
 
 
