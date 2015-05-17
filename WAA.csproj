@@ -143,28 +143,34 @@
     <Compile Include="Base\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\BusinessRegistrationDataController.cs" />
     <Compile Include="Controllers\FlightdeckController.cs" />
     <Compile Include="Controllers\IndividualRegistrationDataController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\testController.cs" />
     <Compile Include="Controllers\TestWebApiController.cs" />
     <Compile Include="Drivers\AddressesDriver.cs" />
     <Compile Include="Drivers\BusinessDriver.cs" />
     <Compile Include="Drivers\ContentInformationDriver.cs" />
+    <Compile Include="Drivers\MemberLookupDriver.cs" />
     <Compile Include="Drivers\MembersDriver.cs" />
     <Compile Include="Drivers\PersonsDriver.cs" />
     <Compile Include="Migration.cs" />
     <Compile Include="Models\AddressesModel.cs" />
     <Compile Include="Models\BusinessModel.cs" />
     <Compile Include="Models\ContactInformationModel.cs" />
+    <Compile Include="Models\MemberLookupModel.cs" />
     <Compile Include="Models\MembersModel.cs" />
     <Compile Include="Models\PersonsModel.cs" />
     <Compile Include="Models\StateModel.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Routes\Routes.cs" />
     <Compile Include="Services\AddressesService.cs" />
+    <Compile Include="Services\BusinessService.cs" />
     <Compile Include="Services\ContactInformationService.cs" />
+    <Compile Include="Services\MemberLookupService.cs" />
     <Compile Include="Services\MembersService.cs" />
     <Compile Include="Services\PersonService.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
@@ -188,7 +194,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Business\" />
     <Folder Include="Views\Flightdeck\" />
+    <Folder Include="Views\Members\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\WaaAdmin.cshtml" />
@@ -197,7 +205,10 @@
     <Content Include="Views\List.IndividualMembers.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Flightdeck.cshtml" />
+    <Content Include="Views\Flightdeck.Business.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Flightdeck.Individual.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

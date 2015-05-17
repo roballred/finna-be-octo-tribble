@@ -16,6 +16,7 @@ namespace WAA.Services
     /// 
     public interface IContactInformationService : IDependency
     {
+        ContactInformationPart Get(int Id);
     }
 
 
@@ -31,6 +32,12 @@ namespace WAA.Services
         public ContactInformationService(IOrchardServices orchardServices)
         {
             _orchardServices = orchardServices;
+        }
+
+        public ContactInformationPart Get(int Id)
+        {
+            return _orchardServices.ContentManager.Query<ContactInformationPart, ContactInformation>().Where(x => x.Id == Id).List().FirstOrDefault();
+
         }
 
     }

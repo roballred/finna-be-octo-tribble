@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WAA.ViewModels;
 
 namespace WAA.Models
 {
@@ -18,6 +19,9 @@ namespace WAA.Models
             this.CreatedOn = DateTime.UtcNow;
             this.RenewalOn = DateTime.UtcNow;
 
+            this.CompanyName = string.Empty;
+            this.Description = string.Empty;
+            this.WebsiteUrl = string.Empty;
 
         }
 
@@ -28,6 +32,8 @@ namespace WAA.Models
         public virtual int PersonId { get; set; }
 
         public virtual string CompanyName { get; set; }
+        public virtual string Description { get; set; }
+        public virtual string WebsiteUrl { get; set; }
 
         public virtual DateTime RenewalOn { get; set; }
 
@@ -102,6 +108,30 @@ namespace WAA.Models
         }
 
 
+        public string CompanyName
+        {
+            get { return Record.CompanyName; }
+            set { Record.CompanyName = value; }
+        }
+        public string Description
+        {
+            get { return Record.Description; }
+            set { Record.Description = value; }
+        }
+        public string WebsiteUrl
+        {
+            get { return Record.WebsiteUrl; }
+            set { Record.WebsiteUrl = value; }
+        }
+
+
+        public void Copy(RegisterBusinessViewModel objRegisterBusinessViewModel)
+        {
+            this.CompanyName = objRegisterBusinessViewModel.CompanyName;
+            this.Description = objRegisterBusinessViewModel.Description;
+            this.WebsiteUrl = objRegisterBusinessViewModel.WebsiteUrl;
+            this.RenewalOn = objRegisterBusinessViewModel.RenewalOn;
+        }
     }
 
     public class BusinessHandler : ContentHandler

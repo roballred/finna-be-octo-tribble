@@ -24,7 +24,7 @@ namespace WAA.ViewModels
             this.Address3 = string.Empty;
             this.Address4 = string.Empty;
             this.City = string.Empty;
-            this.State = string.Empty;
+            this.State = "WA";
             this.ZipCode = string.Empty;
             this.Latitude = 0.0f;
             this.Longitude = 0.0f;

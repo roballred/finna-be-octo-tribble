@@ -37,5 +37,18 @@ namespace WAA.Base
             // Authorizing the current user against a permission
             return _orchardServices.Authorizer.Authorize(Permissions.AccessMemberDashboard);
         }
+
+        protected string GetUserEmail()
+        {
+            string szRetVal = string.Empty;
+
+            IUser usertItem = _orchardServices.WorkContext.CurrentUser;
+            if (usertItem is IUser)
+            {
+                szRetVal = usertItem.Email;
+            }
+
+            return szRetVal;
+        }
     }
 }

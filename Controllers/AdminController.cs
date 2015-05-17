@@ -13,11 +13,12 @@ namespace WAA.Controllers
     public class AdminController : Controller
     {
         private readonly IMembersService _memberService;
+        private readonly IContactInformationService _contactInformationService;
 
-
-        public AdminController(IMembersService memberService)
+        public AdminController(IMembersService memberService, IContactInformationService contactInformationService)
         {
             _memberService = memberService;
+            _contactInformationService = contactInformationService;
         }
 
         [Themed]
@@ -37,8 +38,13 @@ namespace WAA.Controllers
 
             foreach (MembersPart eachMember in allMembers)
             {
+
+                var contactInformation = _contactInformationService.Get(eachMember.ContactId);
+
                 MembersViewModel objMembersViewModel = new MembersViewModel();
                 objMembersViewModel.Person.Copy(eachMember.Person);
+                objMembersViewModel.ContactInfo.Copy(eachMember.ContactInformation);
+                objMembersViewModel.Address.Copy(eachMember.Address);
                 colMembers.Add(objMembersViewModel);
             }
             objListIndividualMembersViewModel.Members = colMembers;

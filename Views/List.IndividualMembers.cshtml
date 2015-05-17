@@ -27,9 +27,13 @@
 
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-striped table-hover responsive">
-                            <tr><th>Name</th><th>Summary</th><th>Action</th></tr>
+                            <tr><th>Name</th><th>City</th><th>State</th><th>EmailAddress</th><th>OfficeNumber</th></tr>
                             <tr ng-repeat="eachMember in Members">
-                                <td><span>{{eachMember.Person.FirstName}}</span></td>
+                                <td><span>{{eachMember.Person.FirstName}} {{eachMember.Person.LastName}}</span></td>
+                                <td><span>{{eachMember.Address.City}}</span></td>
+                                <td><span>{{eachMember.Address.State}}</span></td>
+                                <td><span>{{eachMember.ContactInfo.EmailAddress}}</span></td>
+                                <td><span>{{eachMember.ContactInfo.OfficeNumber}}</span></td>
                                 @*<td>(Max = {{eachRideRules.MaximumRidesAllowed}}, Min = {{eachRideRules.MinimumDrawsRequired}}, Draws = {{eachRideRules.DrawsPerPick}})</td>
             <td>
                 <a href=@(String.Format("{0}/{1}", Url.Action("Edit", "RideRules", new { area = "Producer" }), "{{eachRideRules.Id}}"))>View</a>

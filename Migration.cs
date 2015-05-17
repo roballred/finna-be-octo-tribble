@@ -116,6 +116,22 @@ namespace WAA
                 .Column<DateTime>("CreatedOn")
                 .Column<DateTime>("ModifiedOn")
                 );
+        //public virtual string CompanyName { get; set; }
+        //public virtual string Description { get; set; }
+        //public virtual string WebsiteUrl { get; set; }
+            SchemaBuilder.CreateTable("Business",
+                table => table
+                .ContentPartRecord()
+                .Column<int>("ContactInformationId")
+                .Column<int>("AddressId")
+                .Column<int>("PersonId")
+                .Column<string>("CompanyName", column => column.WithLength(128).NotNull())
+                .Column<string>("Description", column => column.WithLength(256).NotNull())
+                .Column<string>("WebsiteUrl", column => column.WithLength(256).NotNull())
+                .Column<DateTime>("RenewalOn")
+                .Column<DateTime>("CreatedOn")
+                .Column<DateTime>("ModifiedOn")
+                );
 
 
             //create persons table
@@ -187,7 +203,7 @@ namespace WAA
 
             SchemaBuilder.CreateTable("MemberLookup",
                 table => table
-                    .Column<int>("Id", column => column.PrimaryKey().Identity())
+                    .ContentPartRecord()
                     .Column<string>("EmailAddress", column => column.WithLength(254).NotNull())
                     .Column<int>("MemberId")
                     .Column<int>("BusinessId")
@@ -198,25 +214,21 @@ namespace WAA
 
             #region Part Definitions
             ContentDefinitionManager.AlterPartDefinition(typeof(MembersPart).Name, part => part.Attachable());
-
+            ContentDefinitionManager.AlterPartDefinition(typeof(BusinessPart).Name, part => part.Attachable());
             ContentDefinitionManager.AlterPartDefinition(typeof(PersonsPart).Name, part => part.Attachable());
-
             ContentDefinitionManager.AlterPartDefinition(typeof(AddressesPart).Name, part => part.Attachable());
-
-
             ContentDefinitionManager.AlterPartDefinition(typeof(ContactInformationPart).Name, part => part.Attachable());
+            ContentDefinitionManager.AlterPartDefinition(typeof(MemberLookupPart).Name, part => part.Attachable());
 
             #endregion
 
             #region Content Items
             ContentDefinitionManager.AlterTypeDefinition("MembersServiceItem", type => type.WithPart("MembersPart"));
-
-
+            ContentDefinitionManager.AlterTypeDefinition("BusinessServiceItem", type => type.WithPart("BusinessPart"));
             ContentDefinitionManager.AlterTypeDefinition("AddressServiceItem", type => type.WithPart("AddressesPart"));
-
             ContentDefinitionManager.AlterTypeDefinition("ContactInformationServiceItem", type => type.WithPart("ContactInformationPart"));
-
             ContentDefinitionManager.AlterTypeDefinition("PersonServiceItem", type => type.WithPart("PersonsPart"));
+            ContentDefinitionManager.AlterTypeDefinition("MemberLookupServiceItem", type => type.WithPart("MemberLookupPart"));
 
             #endregion
 
@@ -225,21 +237,14 @@ namespace WAA
 
         //public int UpdateFrom1()
         //{
-        //    ContentDefinitionManager.AlterTypeDefinition("TestingContentItem", cfg => cfg
-        //        .WithPart("PersonsPart")
-        //        .WithPart("TaxonomyPart")
-        //        );
-
+        //    ContentDefinitionManager.AlterTypeDefinition("BusinessServiceItem", type => type.WithPart("BusinessPart"));
         //    return 2;
         //}
-        //public int UpdateFrom3()
+        //public int UpdateFrom2()
         //{
-        //    SchemaBuilder.CreateTable("TitlePartRecord",
-        //        table => table
-        //            .ContentPartVersionRecord()
-        //            .Column<string>("Title", column => column.WithLength(1024))
-        //        );
-        //    return 4;
+        //    ContentDefinitionManager.AlterPartDefinition(typeof(MemberLookupPart).Name, part => part.Attachable());
+        //    ContentDefinitionManager.AlterTypeDefinition("MemberLookupServiceItem", type => type.WithPart("MemberLookupPart"));
+        //    return 3;
         //}
     }
 }

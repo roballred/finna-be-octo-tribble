@@ -25,6 +25,7 @@ namespace WAA.ViewModels
             this.Suffix = String.Empty;
             this.Nickname = String.Empty;
             this.Title = string.Empty;
+            this.Gender = 0;
 
         }
         public int Id { get; set; }

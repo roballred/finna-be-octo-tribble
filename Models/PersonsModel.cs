@@ -25,8 +25,6 @@ namespace WAA.Models
 
         public Persons()
         {
-            this.Id = 0;
-
             this.ModifiedOn = DateTime.UtcNow;
             this.CreatedOn = DateTime.UtcNow;
             this.Birthday = DateTime.UtcNow;

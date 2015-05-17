@@ -25,6 +25,7 @@ namespace WAA.Controllers
         private readonly ITaxonomyService _taxonomyService;
         private readonly IMembershipService _membershipService;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IMemberLookupService m_objMemberLookupService;
 
 
 
@@ -33,7 +34,8 @@ namespace WAA.Controllers
             IAddressesService objAddressesService,
             IMembersService objMembersService,
             IMembershipService membershipService,
-            ITaxonomyService taxonomyService)
+            ITaxonomyService taxonomyService,
+            IMemberLookupService objMemberLookupService)
             
         {
             _authenticationService = authenticationService;
@@ -42,6 +44,7 @@ namespace WAA.Controllers
             _membershipService = membershipService;
             _taxonomyService = taxonomyService;
             _orchardServices = orchardServices;
+            m_objMemberLookupService = objMemberLookupService;
 
         }
 
@@ -50,6 +53,7 @@ namespace WAA.Controllers
         [HttpPost]
         public HttpResponseMessage Post()
         {
+
             var response = Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             string szMessageBody = Request.Content.ReadAsStringAsync().Result;
 
@@ -69,22 +73,28 @@ namespace WAA.Controllers
                     member.Address.Copy(objRegisterViewModel.Address);
                     member.ContactInformation.Copy(objRegisterViewModel.ContactInfo);
 
+                    var userLookup = m_objMemberLookupService.Factory(objRegisterViewModel.ContactInfo.EmailAddress);
+                    userLookup.MemberId = member.Id;
                     var memberTermPart = member.ContentItem.As<TermsPart>();
                     var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
 
-                    var categoriesSelected = objRegisterViewModel.Category.Where(x => x.isSelected == true).ToList();
-                    var terms = _taxonomyService.GetTerms(taxonomy.Id);
-
-                    foreach (CategoryViewModel eachCategory in categoriesSelected)
+                    if (memberTermPart != null && taxonomy != null)
                     {
-                        var term = terms.Where(x => x.Name == eachCategory.Name).ToList().FirstOrDefault();
+                        var categoriesSelected = objRegisterViewModel.Category.Where(x => x.isSelected == true).ToList();
+                        var terms = _taxonomyService.GetTerms(taxonomy.Id);
 
-                        memberTermPart.Terms.Add(new TermContentItem
+                        foreach (CategoryViewModel eachCategory in categoriesSelected)
                         {
-                            TermsPartRecord = memberTermPart.Record,
-                            TermRecord = term.Record,
-                            Field = term.Name
-                        });
+                            var term = terms.Where(x => x.Name == eachCategory.Name).ToList().FirstOrDefault();
+
+                            memberTermPart.Terms.Add(new TermContentItem
+                            {
+                                TermsPartRecord = memberTermPart.Record,
+                                TermRecord = term.Record,
+                                Field = term.Name
+                            });
+
+                        }
 
                     }
 

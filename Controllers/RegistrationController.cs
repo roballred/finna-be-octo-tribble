@@ -65,7 +65,7 @@ namespace WAA.Controllers
 
             RegisterIndividualViewModel objRegisterProducerViewModel = new RegisterIndividualViewModel();
             objRegisterProducerViewModel.States = m_objAddressesService.GetStates();
-            objRegisterProducerViewModel.Address.State = string.Empty;
+
             IUser userItem = this.OrchardServices.WorkContext.CurrentUser;
             if (userItem is IUser)
             {
@@ -112,7 +112,6 @@ namespace WAA.Controllers
 
             RegisterBusinessViewModel objRegisterBusinessViewModel = new RegisterBusinessViewModel();
             objRegisterBusinessViewModel.States = m_objAddressesService.GetStates();
-            objRegisterBusinessViewModel.Address.State = string.Empty;
 
             var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
 
