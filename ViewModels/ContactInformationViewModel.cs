@@ -7,7 +7,7 @@ using System.Web;
 
 namespace WAA.ViewModels
 {
-    public class ContactInformationViewModel : BaseViewModel
+    public class ContactInformationViewModel : BaseViewModel, IContactInformation
     {
 
         public ContactInformationViewModel()

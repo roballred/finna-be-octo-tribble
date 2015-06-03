@@ -15,7 +15,7 @@ namespace WAA.Drivers
     public class ProducersDriver : ContentPartDriver<MembersPart>
     {
         private readonly IMembersService m_objMembersService;
-        private const string TemplateName = "Parts/Members";
+        private const string TemplateName = "Parts/MemberDisplay";
 
         public ProducersDriver(IMembersService objMembersService)
         {
@@ -23,21 +23,16 @@ namespace WAA.Drivers
         }
 
 
-        protected override string Prefix
-        {
-            get { return "Members"; }
-        }
-
         protected override DriverResult Display(MembersPart part, string displayType, dynamic shapeHelper)
         {
 
-            return ContentShape("Parts_Producers_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Members", Model: part, Prefix: Prefix));
+            return ContentShape("MemberDisplay", () => shapeHelper.Parts_MemberDisplay(Model: part));
 
         }
 
         protected override DriverResult Editor(MembersPart part, dynamic shapeHelper)
         {
-            return ContentShape("Parts_Addresses_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Members", Model: part, Prefix: Prefix));
+            return ContentShape("Parts_Members_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Parts.Members", Model: part));
 
         }
 

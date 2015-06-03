@@ -24,7 +24,9 @@ namespace WAA.Controllers
         {
             if (!IsAuthorized()) return new HttpUnauthorizedResult();
 
-            return this.Flightdeck();
+            //get user id and pass to Prepare flight deck
+
+            return View("Flightdeck.Individual");
         }
 
         private ActionResult PrepareFlightdeck(int nMemberId)

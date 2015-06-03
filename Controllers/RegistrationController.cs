@@ -59,6 +59,8 @@ namespace WAA.Controllers
             if (IsAuthorized())
             {
                 //check to see if they  have registered in memberlookup
+                return RedirectToAction("Flightdeck", "Member");
+
             }
 
 
@@ -72,7 +74,7 @@ namespace WAA.Controllers
                 objRegisterProducerViewModel.ContactInfo.EmailAddress = userItem.Email;
             }
 
-            var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
+            var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategories");
                      
             if(taxonomy != null)
             {
@@ -108,12 +110,17 @@ namespace WAA.Controllers
         [Themed]
         public ActionResult Business()
         {
-            if (!IsAuthorized()) return new HttpUnauthorizedResult();
+            //if (!IsAuthorized()) return new HttpUnauthorizedResult();
+            if (IsAuthorized())
+            {
+                return RedirectToAction("Flightdeck", "Business");
+                //check to see if they  have registered in memberlookup
+            }
 
             RegisterBusinessViewModel objRegisterBusinessViewModel = new RegisterBusinessViewModel();
             objRegisterBusinessViewModel.States = m_objAddressesService.GetStates();
 
-            var taxonomy = _taxonomyService.GetTaxonomyByName("Category");
+            var taxonomy = _taxonomyService.GetTaxonomyByName("BusinessCategories");
 
             if (taxonomy != null)
             {
@@ -164,7 +171,8 @@ namespace WAA.Controllers
                 var member = m_objMembersService.Factory();
                 member.Person.Copy(objRegisterProducerViewModel.Person);
                 member.Address.Copy(objRegisterProducerViewModel.Address);
-                member.ContactInformation.Copy(objRegisterProducerViewModel.ContactInfo);
+                //member.ContactInformation.Copy(objRegisterProducerViewModel.ContactInfo);
+                ContactInformationPart.Copy(member.ContactInformation, objRegisterProducerViewModel.ContactInfo);
 
                 //save taxonomy
 

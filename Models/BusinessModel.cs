@@ -11,7 +11,27 @@ using WAA.ViewModels;
 
 namespace WAA.Models
 {
-    public class Business : ContentPartRecord
+    public interface IBusinessRecored
+    {
+        int Id { get; set; }
+        int ContactInformationId { get; set; }
+
+        int AddressId { get; set; }
+
+        int PersonId { get; set; }
+
+        string CompanyName { get; set; }
+        string Description { get; set; }
+        string WebsiteUrl { get; set; }
+
+        DateTime RenewalOn { get; set; }
+
+        DateTime ModifiedOn { get; set; }
+
+        DateTime CreatedOn { get; set; }
+
+    }
+    public class Business : ContentPartRecord, IBusinessRecored
     {
         public Business()
         {
@@ -22,6 +42,10 @@ namespace WAA.Models
             this.CompanyName = string.Empty;
             this.Description = string.Empty;
             this.WebsiteUrl = string.Empty;
+            this.ContactInformationId = 0;
+            this.AddressId = 0;
+            this.PersonId = 0;
+
 
         }
 
@@ -43,7 +67,7 @@ namespace WAA.Models
 
     }
 
-    public class BusinessPart : ContentPart<Business>
+    public class BusinessPart : ContentPart<Business>, IBusinessRecored
     {
         internal readonly LazyField<AddressesPart> AddressField = new LazyField<AddressesPart>();
         internal readonly LazyField<ContactInformationPart> ContactInformationField = new LazyField<ContactInformationPart>();
@@ -70,7 +94,7 @@ namespace WAA.Models
 
 
 
-        public int ContactId
+        public int ContactInformationId
         {
             get { return Record.ContactInformationId; }
             set { Record.ContactInformationId = value; }
@@ -124,14 +148,35 @@ namespace WAA.Models
             set { Record.WebsiteUrl = value; }
         }
 
-
-        public void Copy(RegisterBusinessViewModel objRegisterBusinessViewModel)
+        public static void DeepCopy(IBusinessRecored dest, IBusinessRecored src)
         {
-            this.CompanyName = objRegisterBusinessViewModel.CompanyName;
-            this.Description = objRegisterBusinessViewModel.Description;
-            this.WebsiteUrl = objRegisterBusinessViewModel.WebsiteUrl;
-            this.RenewalOn = objRegisterBusinessViewModel.RenewalOn;
+            dest.Id = src.Id;
+            BusinessPart.Copy(dest, src);
         }
+
+        public static void Copy(IBusinessRecored dest, IBusinessRecored src)
+        {
+
+            dest.ContactInformationId = src.ContactInformationId;
+            dest.AddressId = src.AddressId;
+            dest.PersonId = src.PersonId;
+            BusinessPart.MapData(dest, src);
+        }
+        public static void MapData(IBusinessRecored dest, IBusinessRecored src)
+        {
+
+            dest.ModifiedOn = src.ModifiedOn;
+            dest.CreatedOn = src.CreatedOn;
+            dest.RenewalOn = src.RenewalOn;
+
+            dest.CompanyName = src.CompanyName;
+            dest.Description = src.Description;
+            dest.WebsiteUrl = src.WebsiteUrl;
+        }
+
+
+        int IBusinessRecored.Id { get; set; }
+
     }
 
     public class BusinessHandler : ContentHandler

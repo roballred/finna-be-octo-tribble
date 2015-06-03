@@ -13,6 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using WAA.Models;
 
 namespace WAA.Controllers
 {
@@ -71,7 +72,8 @@ namespace WAA.Controllers
                     var member = m_objMembersService.Factory();
                     member.Person.Copy(objRegisterViewModel.Person);
                     member.Address.Copy(objRegisterViewModel.Address);
-                    member.ContactInformation.Copy(objRegisterViewModel.ContactInfo);
+                    //member.ContactInformation.Copy(objRegisterViewModel.ContactInfo);
+                    ContactInformationPart.Copy(member.ContactInformation, objRegisterViewModel.ContactInfo);
 
                     var userLookup = m_objMemberLookupService.Factory(objRegisterViewModel.ContactInfo.EmailAddress);
                     userLookup.MemberId = member.Id;

@@ -175,6 +175,8 @@
     <Compile Include="Services\PersonService.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BusinessViewModel.cs" />
+    <Compile Include="ViewModels\BusniessDirectoryViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ContactInformationViewModel.cs" />
     <Compile Include="ViewModels\ListIndividualMembersViewModel.cs" />
@@ -209,6 +211,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Flightdeck.Individual.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Business.Directory.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\MemberDisplay.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\Members.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.Members.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

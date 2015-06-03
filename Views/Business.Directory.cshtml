@@ -1,0 +1,102 @@
+﻿@model WAA.ViewModels.BusniessDirectoryViewModel
+@{
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js").AtHead();
+
+
+}
+
+
+<div id="layout-dashboard" ng-app="directoryApp">
+    <div id="dashboard" ng-controller="directoryCtrl">
+
+        <div id="dashboard-content">
+
+            <div id="dashboard-control">
+                <div id="dashboard-control-content">
+                    <div id="dashboard-control-tools">
+
+                    </div>
+                    <div id="dashboard-control-header">
+                        <p>Business Directory</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
+                            <tr><th>Search</th><th>Filter By Category</th></tr>
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <input class="form-control text-box" ng-model="query" type="text" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select ng-options="category for category in Businesses.BusinessCategories"></select>
+
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
+                            <tr><th><a href="" ng-click="reverse = !reverse">Company Name</a></th><th>Description</th></tr>
+                            <tr ng-repeat="eachBusiness in Businesses  | filter:search | filter:query | orderBy:'CompanyName':reverse">
+                                <td><span>{{eachBusiness.CompanyName}}</span></td>
+                                <td><span>{{eachBusiness.ContactInfo.WebUrl}}</span></td>
+                                <td><span>{{eachBusiness.ContactInfo.WebUrl}}</span></td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+    var eventApp = angular.module('directoryApp', ['ui.bootstrap']);
+
+    var szFinishedRedirect = "@Url.Action("Index", "Dashboard", new { area = "Producer" })";
+
+
+    eventApp.controller('directoryCtrl', ['$scope', function ($scope) {
+
+
+        $scope.Businesses = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Businesses));
+
+        $scope.OpenDatePicker = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+
+        $scope.IsShowingStartDate = false;
+
+    }]);
+
+
+
+
+
+
+</script>
+
+
+

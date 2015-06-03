@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace WAA.ViewModels
 {
-    public class RegisterBusinessViewModel : BaseViewModel
+    public class RegisterBusinessViewModel : BaseViewModel, IBusinessRecored
     {
         public RegisterBusinessViewModel()
         {
@@ -20,8 +20,21 @@ namespace WAA.ViewModels
             this.Description = string.Empty;
             this.WebsiteUrl = string.Empty;
             this.CompanyName = string.Empty;
+            this.ContactInformationId = 0;
+            this.AddressId = 0;
+            this.PersonId = 0;
+            this.Id = 0;
 
         }
+
+        public int Id { get; set; }
+
+        public int ContactInformationId { get; set; }
+
+        public int AddressId { get; set; }
+
+        public int PersonId { get; set; }
+
 
         public string CompanyName { get; set; }
 
@@ -43,13 +56,7 @@ namespace WAA.ViewModels
 
         public IEnumerable<States> States { get; set; }
 
-        public void Copy(BusinessPart objBusinessPart)
-        {
-            this.CompanyName = objBusinessPart.CompanyName;
-            this.Description = objBusinessPart.Description;
-            this.WebsiteUrl = objBusinessPart.WebsiteUrl;
-            this.RenewalOn = objBusinessPart.RenewalOn;
-        }
+
 
     }
 }

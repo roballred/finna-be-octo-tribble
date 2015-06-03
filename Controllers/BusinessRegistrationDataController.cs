@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Orchard.Security;
 using Orchard.Taxonomies.Models;
+using WAA.Models;
 
 namespace WAA.Controllers
 {
@@ -65,11 +66,14 @@ namespace WAA.Controllers
                 var user = _membershipService.CreateUser(new CreateUserParams(objRegisterBusinessViewModel.ContactInfo.EmailAddress, objRegisterBusinessViewModel.Password, objRegisterBusinessViewModel.ContactInfo.EmailAddress, null, null, false));
                 if (user != null)
                 {
+                    _authenticationService.SignIn(user, false /* createPersistentCookie */);
+
                     var businessMember = m_objBusinessService.Factory();
-                    businessMember.Copy(objRegisterBusinessViewModel);
+                    BusinessPart.MapData(businessMember, objRegisterBusinessViewModel);
                     businessMember.Person.Copy(objRegisterBusinessViewModel.Person);
                     businessMember.Address.Copy(objRegisterBusinessViewModel.Address);
-                    businessMember.ContactInformation.Copy(objRegisterBusinessViewModel.ContactInfo);
+                    //businessMember.ContactInformation.Copy(objRegisterBusinessViewModel.ContactInfo);
+                    ContactInformationPart.Copy(businessMember.ContactInformation, objRegisterBusinessViewModel.ContactInfo);
 
 
                     var userLookup = m_objMemberLookupService.Factory(objRegisterBusinessViewModel.ContactInfo.EmailAddress);

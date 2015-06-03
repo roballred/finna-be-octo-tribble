@@ -11,12 +11,33 @@ using System.Web;
 
 namespace WAA.Models
 {
+
+    public interface IContactInformation
+    {
+        string CellNumber { get; set; }
+
+        string HomeNumber { get; set; }
+
+        string OfficeNumber { get; set; }
+
+        string FacsimileNumber { get; set; }
+
+        string EmailAddress { get; set; }
+
+        string WebUrl { get; set; }
+
+        DateTime ModifiedOn { get; set; }
+
+        DateTime CreatedOn { get; set; }
+
+    }
+
     ///-------------------------------------------------------------------------
     /// <summary>
     /// ContactInformation
     /// </summary>
     /// 
-    public class ContactInformation : ContentPartRecord
+    public class ContactInformation : ContentPartRecord, IContactInformation
     {
 
 
@@ -60,7 +81,7 @@ namespace WAA.Models
     /// ContactInformationPart
     /// </summary>
     /// 
-    public class ContactInformationPart : ContentPart<ContactInformation>
+    public class ContactInformationPart : ContentPart<ContactInformation>, IContactInformation
     {
 
    
@@ -126,17 +147,17 @@ namespace WAA.Models
 
 
 
-        public void Copy(ContactInformationViewModel src)
+        public static void Copy(IContactInformation dest, IContactInformation src)
         {
-            this.ModifiedOn = src.ModifiedOn;
-            this.CreatedOn = src.CreatedOn;
+            dest.ModifiedOn = src.ModifiedOn;
+            dest.CreatedOn = src.CreatedOn;
 
-            this.CellNumber = src.CellNumber;
-            this.HomeNumber = src.HomeNumber;
-            this.OfficeNumber = src.OfficeNumber;
-            this.FacsimileNumber = src.FacsimileNumber;
-            this.EmailAddress = src.EmailAddress;
-            this.WebUrl = src.WebUrl;
+            dest.CellNumber = src.CellNumber;
+            dest.HomeNumber = src.HomeNumber;
+            dest.OfficeNumber = src.OfficeNumber;
+            dest.FacsimileNumber = src.FacsimileNumber;
+            dest.EmailAddress = src.EmailAddress;
+            dest.WebUrl = src.WebUrl;
 
         }
 
