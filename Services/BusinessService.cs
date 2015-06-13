@@ -13,6 +13,7 @@ namespace WAA.Services
 
     public interface IBusinessService : IDependency
     {
+        BusinessPart Get(int Id);
         IEnumerable<BusinessPart> GetAllBusinesses();
         BusinessPart Factory();
     }
@@ -58,6 +59,10 @@ namespace WAA.Services
             return _orchardServices.ContentManager.Query<BusinessPart, Business>().List();
         }
 
+        public BusinessPart Get(int Id)
+        {
+            return _orchardServices.ContentManager.Query<BusinessPart, Business>().Where(x=>x.Id == Id).List().FirstOrDefault();
+        }
 
     }
 }

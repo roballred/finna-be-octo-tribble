@@ -169,8 +169,9 @@ namespace WAA.Controllers
             if(objRegisterProducerViewModel != null)
             {
                 var member = m_objMembersService.Factory();
-                member.Person.Copy(objRegisterProducerViewModel.Person);
-                member.Address.Copy(objRegisterProducerViewModel.Address);
+                PersonsPart.MapData(member.Person, objRegisterProducerViewModel.Person);
+                AddressesPart.MapData(member.Address, objRegisterProducerViewModel.Address);
+
                 //member.ContactInformation.Copy(objRegisterProducerViewModel.ContactInfo);
                 ContactInformationPart.Copy(member.ContactInformation, objRegisterProducerViewModel.ContactInfo);
 

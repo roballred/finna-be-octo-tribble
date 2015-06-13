@@ -22,6 +22,7 @@ namespace WAA.Models
 
         string CompanyName { get; set; }
         string Description { get; set; }
+        string Keywords { get; set; }
         string WebsiteUrl { get; set; }
 
         DateTime RenewalOn { get; set; }
@@ -41,6 +42,7 @@ namespace WAA.Models
 
             this.CompanyName = string.Empty;
             this.Description = string.Empty;
+            this.Keywords = string.Empty;
             this.WebsiteUrl = string.Empty;
             this.ContactInformationId = 0;
             this.AddressId = 0;
@@ -57,6 +59,7 @@ namespace WAA.Models
 
         public virtual string CompanyName { get; set; }
         public virtual string Description { get; set; }
+        public virtual string Keywords { get; set; }
         public virtual string WebsiteUrl { get; set; }
 
         public virtual DateTime RenewalOn { get; set; }
@@ -142,10 +145,23 @@ namespace WAA.Models
             get { return Record.Description; }
             set { Record.Description = value; }
         }
+
+        public string Keywords
+        {
+            get { return Record.Keywords; }
+            set { Record.Keywords = value; }
+        }
+
         public string WebsiteUrl
         {
             get { return Record.WebsiteUrl; }
             set { Record.WebsiteUrl = value; }
+        }
+
+        int IBusinessRecored.Id
+        {
+            get { return Record.Id; }
+            set {  }
         }
 
         public static void DeepCopy(IBusinessRecored dest, IBusinessRecored src)
@@ -156,7 +172,6 @@ namespace WAA.Models
 
         public static void Copy(IBusinessRecored dest, IBusinessRecored src)
         {
-
             dest.ContactInformationId = src.ContactInformationId;
             dest.AddressId = src.AddressId;
             dest.PersonId = src.PersonId;
@@ -171,11 +186,18 @@ namespace WAA.Models
 
             dest.CompanyName = src.CompanyName;
             dest.Description = src.Description;
-            dest.WebsiteUrl = src.WebsiteUrl;
+            Uri objUri = null;
+            Uri.TryCreate(src.WebsiteUrl, UriKind.Absolute, out objUri);
+            if (objUri is Uri)
+            {
+                dest.WebsiteUrl = objUri.AbsoluteUri;
+            }
+
+            //dest.WebsiteUrl = src.WebsiteUrl;
+            dest.Keywords = src.Keywords;
         }
 
 
-        int IBusinessRecored.Id { get; set; }
 
     }
 
@@ -217,7 +239,8 @@ namespace WAA.Models
 
             part.ContactInformationField.Loader(() =>
             {
-                var contactsContentItem = _contentManager.Get<ContactInformationPart>(part.Record.ContactInformationId);
+                //var contactsContentItem = _contentManager.Get<ContactInformationPart>(part.Record.ContactInformationId);
+                var contactsContentItem = _contentManager.Query<ContactInformationPart, ContactInformation>().Where(x => x.Id == part.Record.ContactInformationId).List().FirstOrDefault();
 
                 if (contactsContentItem == null)
                 {
@@ -239,7 +262,7 @@ namespace WAA.Models
             part.PersonField.Loader(() =>
             {
                 var personItem = _contentManager.Get<PersonsPart>(part.Record.PersonId);
-
+                //var personItem = _contentManager.Query<PersonsPart, Persons>().Where(x => x.Id == part.Record.PersonId).List().FirstOrDefault();
                 if (personItem == null)
                 {
                     personItem = _contentManager.Create<PersonsPart>("PersonServiceItem", VersionOptions.Published);

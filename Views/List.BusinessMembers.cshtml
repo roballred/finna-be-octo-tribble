@@ -1,0 +1,127 @@
+﻿@model WAA.ViewModels.BusniessDirectoryViewModel
+@{
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    Style.Include("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js").AtHead();
+
+    //Style.Include("../Styles/bootstrap.min.css");
+    //Style.Include("../Styles/bootstrap-glyphicons.css");
+    //Script.Include("../Scripts/angular.min.js").AtHead();
+    //Script.Include("../Scripts/ui-bootstrap-tpls.min.js").AtHead();
+    //Script.Require("jQuery");
+}
+
+
+<div id="layout-dashboard" ng-app="directoryApp">
+    <div id="dashboard" ng-controller="directoryCtrl">
+
+        <div id="dashboard-content">
+
+            <div id="dashboard-control">
+                <div id="dashboard-control-content">
+                    <div id="dashboard-control-tools">
+
+                    </div>
+                    <div id="dashboard-control-header">
+                        <p>Business Members</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
+                            <tr><th>Search</th></tr>
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <input class="form-control text-box" ng-model="query" type="text" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
+                            <tr>
+                                <th>  
+                                    <a href="#" ng-click="sortType = 'CompanyName'; sortReverse = !sortReverse">
+                                        Company Name
+                                        <span ng-show="sortType == 'CompanyName' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'CompanyName' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    
+                                    <a href="#" ng-click="sortType = 'RenewalOn'; sortReverse = !sortReverse">
+                                        Renewal Date
+                                        <span ng-show="sortType == 'RenewalOn' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'RenewalOn' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+
+                                </th>
+                                <th>Phone</th>
+                                <th>City</th>
+                                <th>State</th>
+                            </tr>
+                            <tr ng-repeat="eachBusiness in Businesses  | filter:search | filter:query | orderBy:sortType:sortReverse">
+
+
+                                <td><a href=@(String.Format("{0}/{1}", Url.Action("EditBusiness", "Admin", new { area = "WAA" }), "{{eachBusiness.Id}}"))>{{eachBusiness.CompanyName}}</a></td>
+                                <td><span>{{eachBusiness.RenewalOn|date:'shortDate'}}</span></td>
+                                <td><span>{{eachBusiness.ContactInfo.OfficeNumber}}</span></td>
+                                <td><span>{{eachBusiness.Address.City}}</span></td>
+                                <td><span>{{eachBusiness.Address.State}}</span></td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+    var eventApp = angular.module('directoryApp', ['ui.bootstrap']);
+
+    var szFinishedRedirect = "@Url.Action("Index", "Dashboard", new { area = "Producer" })";
+
+
+    eventApp.controller('directoryCtrl', ['$scope', function ($scope) {
+
+
+        $scope.sortType     = 'CompanyName'; // set the default sort type
+        $scope.sortReverse  = false;  // set the default sort order
+
+        $scope.Businesses = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Businesses));
+
+        $scope.OpenDatePicker = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+
+        $scope.IsShowingStartDate = false;
+
+    }]);
+
+
+
+
+
+
+</script>
+
+
+

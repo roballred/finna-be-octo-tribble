@@ -1,4 +1,4 @@
-﻿@model WAA.ViewModels.RegisterBusinessViewModel
+﻿@model WAA.ViewModels.RegisterIndividualViewModel
 @{
 
     Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
@@ -25,16 +25,9 @@
 
                 <div id="dashboard-control-content" class="col-sm-6 col-sm-offset-3">
                     <div id="dashboard-control-header">
-                        <p>Business Membership Information</p>
+                        <p>Individual Membership Information</p>
                     </div>
                     <ng-form name="Registration_form" class="validation-form" novalidate>
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.CompanyName.$invalid,  'has-success' : (Registration_form.CompanyName.$valid)}">
-                            <label>Company Name</label>
-                            <input name="CompanyName" required ng-minlength="3" class="form-control text-box single-line" ng-model="Registration.CompanyName" type="text">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.CompanyName.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.CompanyName.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                        </div>
                         <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.FirstName.$invalid,  'has-success' : (Registration_form.FirstName.$valid)}">
                             <label>Contact First Name</label>
                             <input name="FirstName" required ng-minlength="3" class="form-control text-box single-line" ng-model="Registration.Person.FirstName" type="text">
@@ -56,15 +49,6 @@
                             <span class="form-control-feedback" ng-cloak ng-show="Registration_form.EmailAddress.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
                             <span class="form-control-feedback" ng-cloak ng-show="Registration_form.EmailAddress.$invalid && Registration_form.submitted"><strong>!</strong></span>
                         </div>
-                        <div class="form-group  has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.password.$invalid,  'has-success' : (Registration_form.password.$valid)}">
-                            <label for="password">Password:</label>
-                            <input name="password" required class="form-control text-box single-line" ng-model="Registration.Password" type="password">
-                        </div>
-                        <div class="form-group  has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.confirmPassword.$invalid || Registration.ConfirmPassword != Registration.Password,  'has-success' : (Registration_form.confirmPassword.$valid && Registration.ConfirmPassword == Registration.Password)}">
-                            <label for="confirmPassword">Confirm password:</label>
-                            <input name="confirmPassword" required class="form-control text-box single-line" ng-model="Registration.ConfirmPassword" type="password">
-                        </div>
-
                         <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.Address1.$invalid,  'has-success' : (Registration_form.Address1.$valid)}">
                             <label>Street Address</label>
                             <input name="Address1" required ng-minlength="2" class="form-control text-box single-line" ng-model="Registration.Address.Address1" type="text">
@@ -115,18 +99,13 @@
                         </div>
 
                         <div class="form-group has-feedback validation-group">
-                            <label>Website URL</label>
-                            <input name="websiteUrl" class="form-control text-box single-line" ng-model="Registration.WebsiteUrl" type="text" placeholder="http://www.CompanyName.com">
+                            <label>Renewal Date</label>
+                            <div class="input-group">
+                                @*<input type="date" ng-model="Registration.RenewalOn | date: 'shortDate'" placeholder="{{Registration.RenewalOn | date:'shortDate'}}" />*@
+                                <input name="StartDateTime" type="text" class="form-control text-box" show-weeks="false" ng-model="Registration.RenewalOn" datepicker-popup="shortDate" datepicker-options=" dateoptions" close-text="Close" />
+                            </div>
                         </div>
 
-                        <div class="form-group has-feedback validation-group">
-                            <label>Company Description</label>
-                            <textarea name="CompanyName" rows="4" class="form-control" ng-model="Registration.Description" ngmaxlength="255" type="text"></textarea>
-                        </div>
-                        <div class="form-group has-feedback validation-group">
-                            <label>Company Keywords</label>
-                            <textarea name="CompanyName" rows="4" class="form-control" ng-model="Registration.Keywords" ngmaxlength="255" type="text"></textarea>
-                        </div>
 
                         <div class="form-group has-feedback validation-group">
                             <label>Categories</label>
@@ -143,6 +122,7 @@
 
                         <div class="btn-group btn-group-lg">
                             <button class="btn btn-default" ng-disabled="IsUploadingData == true" type="button" ng-click="PostData()">@T("Save")</button>
+                            <button class="btn btn-default" ng-click="Cancel()">@T("Cancel")</button>
                             <img ng-show="IsUploadingData" src="http://x4wordpress.cloudapp.net/wp-content/uploads/2014/10/spinner.gif" />
 
                         </div>
@@ -179,11 +159,38 @@
         $scope.Registration = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
         $scope.Countries = ["United States", "Canada", "Mexico"];
 
-        var szPostData = "@Url.HttpRouteUrl("MembershipRoute", new { controller = "BusinessRegistrationData" })";
+        var szPostData = "@Url.HttpRouteUrl("MembershipRoute", new { controller = "EditIndividualData" })";
 
-        var szFinishedRedirect = "@Url.Action("Flightdeck", "Business", new { area = "WAA" })";
+        var szFinishedRedirect = "@Url.Action("ListMembers", "Admin", new { area = "WAA" })";
+
+        window.onbeforeunload = function () {
+            return "Leaving will result in the loss of any unsaved data? ";
+        };
+
+        $scope.Cancel = function () {
+            //var r = confirm("Are you sure you want to cancel and lose any unsaved work?");
+            //if (r == true) {
+            //    $(window).unbind('beforeunload');
+            //    window.location = szFinishedRedirect;
+            //}
+            window.onbeforeunload = null;
+            window.location = szFinishedRedirect;
+
+        }
+
+
+        $scope.OpenDatePicker = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            showWeeks: 'false'
+        };
 
         $scope.PostData = function () {
+
 
             $scope.Registration_form.$submitted = true;
             if($scope.Registration_form.$valid)
@@ -194,6 +201,7 @@
 
                 $http.post(szPostData, objData).
                     success(function (data, headers) {
+                        window.onbeforeunload = null;
                         window.location = szFinishedRedirect;
                         console.log(headers());
                     }).

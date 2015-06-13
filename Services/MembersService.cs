@@ -24,6 +24,8 @@ namespace WAA.Services
     public interface IMembersService : IDependency
     {
         IEnumerable<MembersPart> GetAllMembers();
+        MembersPart Get(int Id);
+
         MembersPart Factory();
         void Testing();
     }
@@ -66,6 +68,11 @@ namespace WAA.Services
 
             return objMemberPart;
 
+        }
+
+        public MembersPart Get(int Id)
+        {
+            return _orchardServices.ContentManager.Query<MembersPart, Members>().Where(x => x.Id == Id).List().FirstOrDefault();
         }
 
 

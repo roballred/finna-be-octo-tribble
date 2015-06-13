@@ -7,7 +7,7 @@ using System.Web;
 
 namespace WAA.ViewModels
 {
-    public class PersonViewModel : BaseViewModel
+    public class PersonViewModel : BaseViewModel, IPersons
     {
 
         public PersonViewModel()

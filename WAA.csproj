@@ -67,6 +67,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -111,6 +112,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap.min.css" />
+    <Content Include="Scripts\ui-bootstrap-tpls.min.js" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
@@ -144,8 +148,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
+    <Compile Include="Controllers\EditBusinessDataController.cs" />
     <Compile Include="Controllers\BusinessRegistrationDataController.cs" />
     <Compile Include="Controllers\FlightdeckController.cs" />
+    <Compile Include="Controllers\EditIndividualDataController.cs" />
     <Compile Include="Controllers\IndividualRegistrationDataController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
@@ -180,6 +186,7 @@
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ContactInformationViewModel.cs" />
     <Compile Include="ViewModels\ListIndividualMembersViewModel.cs" />
+    <Compile Include="ViewModels\MembersDirectoryViewModel.cs" />
     <Compile Include="ViewModels\MembersViewModel.cs" />
     <Compile Include="ViewModels\PersonViewModel.cs" />
     <Compile Include="ViewModels\RegisterBusinessViewModel.cs" />
@@ -223,6 +230,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts.Members.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\List.BusinessMembers.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Edit.BusinessMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Edit.IndividualMember.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

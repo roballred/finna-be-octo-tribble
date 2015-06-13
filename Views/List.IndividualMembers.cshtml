@@ -1,6 +1,7 @@
 ﻿@model WAA.ViewModels.ListIndividualMembersViewModel
 @{
     Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+    Style.Include("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
 
     Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
     Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
@@ -22,23 +23,51 @@
 
                 <div id="dashboard-control-content">
                     <div id="dashboard-control-header">
-                        <p>Your RideRules</p>
+                        <p>Individual Members</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
+                            <tr><th>Search</th></tr>
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <input class="form-control text-box" ng-model="query" type="text" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
                     </div>
 
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-striped table-hover responsive">
-                            <tr><th>Name</th><th>City</th><th>State</th><th>EmailAddress</th><th>OfficeNumber</th></tr>
-                            <tr ng-repeat="eachMember in Members">
-                                <td><span>{{eachMember.Person.FirstName}} {{eachMember.Person.LastName}}</span></td>
+                            <tr>
+                                <th>
+                                    <a href="#" ng-click="sortType = 'Person.LastName'; sortReverse = !sortReverse">
+                                        Name
+                                        <span ng-show="sortType == 'Person.LastName' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'Person.LastName' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#" ng-click="sortType = 'RenewalOn'; sortReverse = !sortReverse">
+                                        Renewal Date
+                                        <span ng-show="sortType == 'RenewalOn' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'RenewalOn' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>EmailAddress</th>
+                                <th>OfficeNumber</th>
+                            </tr>
+                            <tr ng-repeat="eachMember in Members  | filter:search | filter:query | orderBy:sortType:sortReverse">
+                                <td><a href=@(String.Format("{0}/{1}", Url.Action("EditMember", "Admin", new { area = "WAA" }), "{{eachMember.Id}}"))>{{eachMember.Person.FirstName}} {{eachMember.Person.LastName}}</a></td>
+                                <td><span>{{eachMember.RenewalOn|date:'shortDate'}}</span></td>
                                 <td><span>{{eachMember.Address.City}}</span></td>
                                 <td><span>{{eachMember.Address.State}}</span></td>
                                 <td><span>{{eachMember.ContactInfo.EmailAddress}}</span></td>
                                 <td><span>{{eachMember.ContactInfo.OfficeNumber}}</span></td>
-                                @*<td>(Max = {{eachRideRules.MaximumRidesAllowed}}, Min = {{eachRideRules.MinimumDrawsRequired}}, Draws = {{eachRideRules.DrawsPerPick}})</td>
-            <td>
-                <a href=@(String.Format("{0}/{1}", Url.Action("Edit", "RideRules", new { area = "Producer" }), "{{eachRideRules.Id}}"))>View</a>
-                | <a ng-click="OnDelete(eachRideRules)">Delete</a>
-            </td>*@
 
                             </tr>
 
@@ -67,6 +96,9 @@
 
 
     App.controller('Ctrl', ['$scope', function ($scope) {
+
+        $scope.sortType     = 'eachMember.Person.LastName'; // set the default sort type
+        $scope.sortReverse  = false;  // set the default sort order
 
 
         $scope.Members = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Members));

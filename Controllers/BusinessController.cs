@@ -19,14 +19,16 @@ namespace WAA.Controllers
     {
         private readonly ITaxonomyService _taxonomyService;
         private readonly IBusinessService m_objIBusinessService;
-
+        private readonly IContactInformationService m_objContactInformationService;
         public BusinessController(IOrchardServices orchardServices,
             ITaxonomyService taxonomyService,
-            IBusinessService objIBusinessService)
+            IBusinessService objIBusinessService,
+            IContactInformationService objContactInformationService)
             : base(orchardServices)
         {
             _taxonomyService = taxonomyService;
             m_objIBusinessService = objIBusinessService;
+            m_objContactInformationService = objContactInformationService;
         }
         // GET: Business
         public ActionResult Index()
@@ -56,7 +58,57 @@ namespace WAA.Controllers
                 BusinessViewModel businessViewModel = new BusinessViewModel();
                 BusinessPart.DeepCopy(businessViewModel, eachBusiness);
 
-                ContactInformationPart.Copy(businessViewModel.ContactInfo, eachBusiness.ContactInformation);
+                ContactInformationPart.DeepCopy(businessViewModel.ContactInfo, eachBusiness.ContactInformation);
+
+                //ContactInformationViewModel eachBusiness.ContactInformation
+                var memberTermPart = eachBusiness.ContentItem.As<TermsPart>();
+                var terms = _taxonomyService.GetTermsForContentItem(memberTermPart.Id);
+                foreach (TermPart eachterm in terms)
+                {
+                    CategoryViewModel category = new CategoryViewModel();
+                    category.Name = eachterm.Name;
+                    businessViewModel.Category.Add(category);
+                }
+                objBusniessDirectoryViewModel.Businesses.Add(businessViewModel);
+            }
+
+            var taxonomy = _taxonomyService.GetTaxonomyByName("BusinessCategories");
+
+            if (taxonomy != null)
+            {
+                var terms = _taxonomyService.GetTerms(taxonomy.Id);
+
+
+                foreach (TermPart eachTerm in terms)
+                {
+                    CategoryViewModel objCategoryViewModel = new CategoryViewModel();
+                    objCategoryViewModel.Name = eachTerm.Name;
+                    objBusniessDirectoryViewModel.BusinessCategories.Add(objCategoryViewModel);
+                }
+
+            }
+
+            return View("Business.Directory", objBusniessDirectoryViewModel);
+        }
+
+        public string DirectoryJSON()
+        {
+
+            BusniessDirectoryViewModel objBusniessDirectoryViewModel = new BusniessDirectoryViewModel();
+
+            var businessParts = m_objIBusinessService.GetAllBusinesses();
+            foreach (BusinessPart eachBusiness in businessParts)
+            {
+                BusinessViewModel businessViewModel = new BusinessViewModel();
+                BusinessPart.DeepCopy(businessViewModel, eachBusiness);
+
+                //var contactInfo = m_objContactInformationService.Get(eachBusiness.ContactInformationId);
+                //ContactInformationPart.Copy(businessViewModel.ContactInfo, contactInfo);
+                ContactInformationPart.DeepCopy(businessViewModel.ContactInfo, eachBusiness.ContactInformation);
+
+                PersonsPart.Copy(businessViewModel.Person, eachBusiness.Person);
+
+                AddressesPart.Copy(businessViewModel.Address, eachBusiness.Address);
 
                 //ContactInformationViewModel eachBusiness.ContactInformation
                 var memberTermPart = eachBusiness.ContentItem.As<TermsPart>();
@@ -87,7 +139,8 @@ namespace WAA.Controllers
             }
 
 
-            return View("Business.Directory", objBusniessDirectoryViewModel);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(objBusniessDirectoryViewModel);
+
         }
 
     }

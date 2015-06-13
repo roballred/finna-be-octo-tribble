@@ -14,6 +14,7 @@ namespace WAA.Models
 
     public interface IContactInformation
     {
+        int Id { get; set; }
         string CellNumber { get; set; }
 
         string HomeNumber { get; set; }
@@ -145,9 +146,27 @@ namespace WAA.Models
             set { Record.CreatedOn = value; }
         }
 
+        int IContactInformation.Id
+        {
+            get { return Record.Id; }
+            set { Record.Id = value; }
+        }
+
+        public static void DeepCopy(IContactInformation dest, IContactInformation src)
+        {
+            dest.Id = src.Id;
+
+            ContactInformationPart.Copy(dest, src);
+        }
 
 
         public static void Copy(IContactInformation dest, IContactInformation src)
+        {
+            ContactInformationPart.MapData(dest, src);
+        }
+
+
+        public static void MapData(IContactInformation dest, IContactInformation src)
         {
             dest.ModifiedOn = src.ModifiedOn;
             dest.CreatedOn = src.CreatedOn;
@@ -160,6 +179,8 @@ namespace WAA.Models
             dest.WebUrl = src.WebUrl;
 
         }
+
+
 
     }
 

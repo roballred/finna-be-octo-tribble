@@ -27,7 +27,7 @@ namespace WAA
     //    .Add(T("Reports"), "1", elements => elements.Action("Reports", "Admin", new { area = "WAA" })));
 
             builder.AddImageSet("settings").Add(T("WAA Admin"), "-1")
-                .Add(T("WAA Admin"), "1", menu => menu.Action("Reports", "Admin", new { area = "WAA" }).Permission(Permissions.AccessWaaDashboard));
+                .Add(T("WAA Admin"), "1", menu => menu.Action("Index", "Admin", new { area = "WAA" }).Permission(Permissions.AccessWaaDashboard));
 
                
 

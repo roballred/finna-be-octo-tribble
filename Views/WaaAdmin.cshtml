@@ -7,11 +7,22 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>WaaAdmin</title>
+    <title>WAA Admin</title>
 </head>
 <body>
     <div> 
-        <h1>test</h1>
+        <h1>Manage Business Members</h1>
+        <ul>
+            <li>@Html.ActionLink("List Businesses", "ListBusinesses" ,"Admin", new { area="WAA"}, null)</li>
+            <li>Create New Member</li>
+        </ul>
+
+        <h1>Manage Individual Members</h1>
+        <ul>
+            <li>@Html.ActionLink("List Members", "ListMembers", "Admin", new { area = "WAA" }, null)</li>
+            <li>Create New Member</li>
+        </ul>
+
     </div>
 </body>
 </html>

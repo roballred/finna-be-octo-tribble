@@ -70,8 +70,9 @@ namespace WAA.Controllers
                 {
                     _authenticationService.SignIn(user, false /* createPersistentCookie */);
                     var member = m_objMembersService.Factory();
-                    member.Person.Copy(objRegisterViewModel.Person);
-                    member.Address.Copy(objRegisterViewModel.Address);
+                    PersonsPart.MapData(member.Person, objRegisterViewModel.Person);
+                    AddressesPart.MapData(member.Address, objRegisterViewModel.Address);
+
                     //member.ContactInformation.Copy(objRegisterViewModel.ContactInfo);
                     ContactInformationPart.Copy(member.ContactInformation, objRegisterViewModel.ContactInfo);
 

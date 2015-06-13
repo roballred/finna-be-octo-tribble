@@ -127,6 +127,7 @@ namespace WAA
                 .Column<int>("PersonId")
                 .Column<string>("CompanyName", column => column.WithLength(128).NotNull())
                 .Column<string>("Description", column => column.WithLength(256).NotNull())
+                .Column<string>("Keywords", column => column.WithLength(256).NotNull())
                 .Column<string>("WebsiteUrl", column => column.WithLength(256).NotNull())
                 .Column<DateTime>("RenewalOn")
                 .Column<DateTime>("CreatedOn")

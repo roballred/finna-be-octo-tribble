@@ -1,14 +1,18 @@
 ﻿@model WAA.ViewModels.BusniessDirectoryViewModel
 @{
-    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+    //Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
 
-    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    //Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
 
-    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js").AtHead();
-    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
-    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js").AtHead();
+    //Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js").AtHead();
+    //Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+    //Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js").AtHead();
 
-
+    Style.Include("../Styles/bootstrap.min.css");
+    Style.Include("../Styles/bootstrap-glyphicons.css");
+    Script.Include("../Scripts/angular.min.js").AtHead();
+    Script.Include("../Scripts/ui-bootstrap-tpls.min.js").AtHead();
+    Script.Require("jQuery");
 }
 
 
@@ -27,19 +31,12 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-striped table-hover responsive">
-                            <tr><th>Search</th><th>Filter By Category</th></tr>
+                            <tr><th>Search</th></tr>
                             <tr>
                                 <td>
                                     <div class="input-group">
                                         <input class="form-control text-box" ng-model="query" type="text" />
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <select ng-options="category for category in Businesses.BusinessCategories"></select>
-
-                                    </div>
-
                                 </td>
                             </tr>
                         </table>
@@ -47,11 +44,11 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-striped table-hover responsive">
-                            <tr><th><a href="" ng-click="reverse = !reverse">Company Name</a></th><th>Description</th></tr>
+                            <tr><th><a href="" ng-click="reverse = !reverse">Company Name</a></th><th>Phone</th><th>Website</th></tr>
                             <tr ng-repeat="eachBusiness in Businesses  | filter:search | filter:query | orderBy:'CompanyName':reverse">
                                 <td><span>{{eachBusiness.CompanyName}}</span></td>
-                                <td><span>{{eachBusiness.ContactInfo.WebUrl}}</span></td>
-                                <td><span>{{eachBusiness.ContactInfo.WebUrl}}</span></td>
+                                <td><span>{{eachBusiness.ContactInfo.OfficeNumber}}</span></td>
+                                <td><span>{{eachBusiness.WebsiteUrl}}</span></td>
                             </tr>
 
                         </table>

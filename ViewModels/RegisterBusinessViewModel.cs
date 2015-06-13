@@ -18,6 +18,7 @@ namespace WAA.ViewModels
             this.Category = new List<CategoryViewModel>();
             this.States = new List<States>();
             this.Description = string.Empty;
+            this.Keywords = string.Empty;
             this.WebsiteUrl = string.Empty;
             this.CompanyName = string.Empty;
             this.ContactInformationId = 0;
@@ -40,6 +41,8 @@ namespace WAA.ViewModels
 
         [DefaultValue("")]
         public string Description { get; set; }
+        [DefaultValue("")]
+        public string Keywords { get; set; }
                 
         [DefaultValue("")]
         public string WebsiteUrl { get; set; }

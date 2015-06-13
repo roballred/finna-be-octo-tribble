@@ -8,7 +8,7 @@ using System.Web;
 
 namespace WAA.ViewModels
 {
-    public class AddressViewModel : BaseViewModel
+    public class AddressViewModel : BaseViewModel, IAddress
     {
 
         private const string szDefaultString = "";

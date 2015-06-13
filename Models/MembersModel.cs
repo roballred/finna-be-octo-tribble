@@ -14,13 +14,30 @@ namespace WAA.Models
 {
 
 
+    public interface IMembers
+    {
+        int Id { get; set; }
+
+        int ContactInformationId { get; set; }
+
+        int AddressId { get; set; }
+
+        int PersonId { get; set; }
+
+        DateTime RenewalOn { get; set; }
+
+        DateTime ModifiedOn { get; set; }
+
+        DateTime CreatedOn { get; set; }
+
+    }
 
     ///-------------------------------------------------------------------------
     /// <summary>
     /// Members
     /// </summary>
     /// 
-    public class Members : ContentPartRecord
+    public class Members : ContentPartRecord, IMembers
     {
         public Members()
         {
@@ -28,7 +45,9 @@ namespace WAA.Models
             this.CreatedOn = DateTime.UtcNow;
             this.RenewalOn = DateTime.UtcNow;
 
-
+            this.ContactInformationId = 0;
+            this.AddressId = 0;
+            this.PersonId = 0;
         }
 
         public virtual int ContactInformationId { get; set; }
@@ -50,7 +69,7 @@ namespace WAA.Models
     /// MembersPart
     /// </summary>
     /// 
-    public class MembersPart : ContentPart<Members>
+    public class MembersPart : ContentPart<Members>, IMembers
     {
 
         internal readonly LazyField<AddressesPart> AddressField = new LazyField<AddressesPart>();
@@ -78,7 +97,7 @@ namespace WAA.Models
 
 
 
-        public int ContactId
+        public int ContactInformationId
         {
             get { return Record.ContactInformationId; }
             set { Record.ContactInformationId = value; }
@@ -115,8 +134,36 @@ namespace WAA.Models
             set { Record.CreatedOn = value; }
         }
 
+        int IMembers.Id
+        {
+            get { return Record.Id; }
+            set {  }
+        }
 
-       
+
+        public static void DeepCopy(IMembers dest, IMembers src)
+        {
+            dest.Id = src.Id;
+            MembersPart.Copy(dest, src);
+        }
+
+        public static void Copy(IMembers dest, IMembers src)
+        {
+            dest.ContactInformationId = src.ContactInformationId;
+            dest.AddressId = src.AddressId;
+            dest.PersonId = src.PersonId;
+            MembersPart.MapData(dest, src);
+        }
+        public static void MapData(IMembers dest, IMembers src)
+        {
+
+            dest.ModifiedOn = src.ModifiedOn;
+            dest.CreatedOn = src.CreatedOn;
+            dest.RenewalOn = src.RenewalOn;
+
+
+        }
+
     }
 
 
@@ -160,7 +207,8 @@ namespace WAA.Models
 
             part.ContactInformationField.Loader(contact =>
             {
-                var contactsContentItem = _contentManager.Get<ContactInformationPart>(part.Record.ContactInformationId);
+                //var contactsContentItem = _contentManager.Get<ContactInformationPart>(part.Record.ContactInformationId);
+                var contactsContentItem = _contentManager.Query<ContactInformationPart, ContactInformation>().Where(x => x.Id == part.Record.ContactInformationId).List().FirstOrDefault();
 
                 if (contactsContentItem == null)
                 {

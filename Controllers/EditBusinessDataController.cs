@@ -17,7 +17,7 @@ using WAA.Models;
 
 namespace WAA.Controllers
 {
-    public class BusinessRegistrationDataController : ApiController
+    public class EditBusinessDataController : ApiController
     {
 
                 
@@ -31,7 +31,7 @@ namespace WAA.Controllers
 
 
 
-        public BusinessRegistrationDataController(IOrchardServices orchardServices,
+        public EditBusinessDataController(IOrchardServices orchardServices,
             IAddressesService objAddressesService,
             IAuthenticationService authenticationService,
             IMembershipService membershipService,
@@ -63,43 +63,37 @@ namespace WAA.Controllers
             if (objRegisterBusinessViewModel != null)
             {
 
-                var user = _membershipService.CreateUser(new CreateUserParams(objRegisterBusinessViewModel.ContactInfo.EmailAddress, objRegisterBusinessViewModel.Password, objRegisterBusinessViewModel.ContactInfo.EmailAddress, null, null, false));
-                if (user != null)
+                var businessMember = m_objBusinessService.Get(objRegisterBusinessViewModel.Id);
+                if (businessMember != null)
                 {
-                    _authenticationService.SignIn(user, false /* createPersistentCookie */);
-
-                    var businessMember = m_objBusinessService.Factory();
                     BusinessPart.MapData(businessMember, objRegisterBusinessViewModel);
                     PersonsPart.MapData(businessMember.Person, objRegisterBusinessViewModel.Person);
                     AddressesPart.MapData(businessMember.Address, objRegisterBusinessViewModel.Address);
                     ContactInformationPart.Copy(businessMember.ContactInformation, objRegisterBusinessViewModel.ContactInfo);
 
 
-                    var userLookup = m_objMemberLookupService.Factory(objRegisterBusinessViewModel.ContactInfo.EmailAddress);
-                    userLookup.BusinessId = businessMember.Id;
-                    
-                    var memberTermPart = businessMember.ContentItem.As<TermsPart>();
-                    var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
+                    //var memberTermPart = businessMember.ContentItem.As<TermsPart>();
+                    //var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategory");
 
-                    if(memberTermPart != null && taxonomy != null)
-                    {
-                        var categoriesSelected = objRegisterBusinessViewModel.Category.Where(x => x.isSelected == true).ToList();
-                        var terms = _taxonomyService.GetTerms(taxonomy.Id);
+                    //if (memberTermPart != null && taxonomy != null)
+                    //{
+                    //    var categoriesSelected = objRegisterBusinessViewModel.Category.Where(x => x.isSelected == true).ToList();
+                    //    var terms = _taxonomyService.GetTerms(taxonomy.Id);
 
-                        foreach (CategoryViewModel eachCategory in categoriesSelected)
-                        {
-                            var term = terms.Where(x => x.Name == eachCategory.Name).ToList().FirstOrDefault();
+                    //    foreach (CategoryViewModel eachCategory in categoriesSelected)
+                    //    {
+                    //        var term = terms.Where(x => x.Name == eachCategory.Name).ToList().FirstOrDefault();
 
-                            memberTermPart.Terms.Add(new TermContentItem
-                            {
-                                TermsPartRecord = memberTermPart.Record,
-                                TermRecord = term.Record,
-                                Field = term.Name
-                            });
+                    //        memberTermPart.Terms.Add(new TermContentItem
+                    //        {
+                    //            TermsPartRecord = memberTermPart.Record,
+                    //            TermRecord = term.Record,
+                    //            Field = term.Name
+                    //        });
 
-                        }
+                    //    }
 
-                    }
+                    //}
 
                 }
 

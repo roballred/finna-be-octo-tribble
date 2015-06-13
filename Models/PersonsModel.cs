@@ -15,12 +15,38 @@ using System.Web;
 namespace WAA.Models
 {
 
+    public interface IPersons
+    {
+        int Id { get; set; }
+        string Prefix { get; set; }
+
+        string FirstName { get; set; }
+
+        string MiddleName { get; set; }
+
+        string LastName { get; set; }
+
+        string Suffix { get; set; }
+
+        string Nickname { get; set; }
+
+        string Title { get; set; }
+
+        int Gender { get; set; }
+
+        DateTime ModifiedOn { get; set; }
+
+        DateTime CreatedOn { get; set; }
+
+        DateTime Birthday { get; set; }
+
+    }
     ///-------------------------------------------------------------------------
     /// <summary>
     /// Persons
     /// </summary>
     /// 
-    public class Persons : ContentPartRecord
+    public class Persons : ContentPartRecord, IPersons
     {
 
         public Persons()
@@ -72,7 +98,7 @@ namespace WAA.Models
     /// PersonsPart
     /// </summary>
     /// 
-    public class PersonsPart : ContentPart<Persons>
+    public class PersonsPart : ContentPart<Persons>, IPersons
     {
 
 
@@ -158,6 +184,11 @@ namespace WAA.Models
             set { Record.Birthday = value; }
         }
 
+        int IPersons.Id
+        {
+            get { return Record.Id; }
+            set { }
+        }
 
 
         public string FullName
@@ -195,22 +226,30 @@ namespace WAA.Models
             }
         }
 
-
-
-        public void Copy(PersonViewModel src)
+        public static void DeepCopy(IPersons dest, IPersons src)
         {
-            this.ModifiedOn = src.ModifiedOn;
-            this.CreatedOn = src.CreatedOn;
-            this.Birthday = src.Birthday;
+            dest.Id = src.Id;
+            PersonsPart.Copy(dest, src);
+        }
 
-            this.Prefix = src.Prefix;
-            this.FirstName = src.FirstName;
-            this.MiddleName = src.MiddleName;
-            this.LastName = src.LastName;
-            this.Suffix = src.Suffix;
-            this.Nickname = src.Nickname;
-            this.Title = src.Title;
-            this.Gender = src.Gender;
+        public static void Copy(IPersons dest, IPersons src)
+        {
+            PersonsPart.MapData(dest, src);
+        }
+        public static void MapData(IPersons dest, IPersons src)
+        {
+            dest.ModifiedOn = src.ModifiedOn;
+            dest.CreatedOn = src.CreatedOn;
+            dest.Birthday = src.Birthday;
+
+            dest.Prefix = src.Prefix;
+            dest.FirstName = src.FirstName;
+            dest.MiddleName = src.MiddleName;
+            dest.LastName = src.LastName;
+            dest.Suffix = src.Suffix;
+            dest.Nickname = src.Nickname;
+            dest.Title = src.Title;
+            dest.Gender = src.Gender;
 
         }
 

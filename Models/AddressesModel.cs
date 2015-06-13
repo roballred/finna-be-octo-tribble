@@ -13,13 +13,44 @@ using System.Web;
 namespace WAA.Models
 {
 
+    public interface IAddress
+    {
+        int Id { get; set; }
+        string Address1 { get; set; }
+
+        string Address2 { get; set; }
+
+
+        string Address3 { get; set; }
+
+        string Address4 { get; set; }
+
+
+        string City { get; set; }
+
+        string State { get; set; }
+
+
+        string ZipCode { get; set; }
+
+        string Country { get; set; }
+
+        DateTime ModifiedOn { get; set; }
+
+        DateTime CreatedOn { get; set; }
+
+        double Latitude { get; set; }
+
+        double Longitude { get; set; }
+
+    }
 
     ///-------------------------------------------------------------------------
     /// <summary>
     /// Addresses
     /// </summary>
     /// 
-    public class Addresses : ContentPartRecord
+    public class Addresses : ContentPartRecord, IAddress
     {
 
 
@@ -78,7 +109,7 @@ namespace WAA.Models
     /// AddressesPart
     /// </summary>
     /// 
-    public class AddressesPart : ContentPart<Addresses>
+    public class AddressesPart : ContentPart<Addresses>, IAddress
     {
         public string Address1
         {
@@ -167,6 +198,11 @@ namespace WAA.Models
             set { Record.Longitude = value; }
         }
 
+        int IAddress.Id
+        {
+            get { return Record.Id; }
+            set { }
+        }
 
         public string ShortAddress()
         {
@@ -179,24 +215,35 @@ namespace WAA.Models
             return szReturn;
         }
 
-
-
-        public void Copy(AddressViewModel src)
+        public static void DeepCopy(IAddress dest, IAddress src)
         {
-            this.ModifiedOn = src.ModifiedOn;
-            this.CreatedOn = src.CreatedOn;
-            this.Address1 = src.Address1;
-            this.Address2 = src.Address2;
-            this.Address3 = src.Address3;
-            this.Address4 = src.Address4;
-            this.City = src.City;
-            this.State = src.State;
-            this.ZipCode = src.ZipCode;
-            this.Latitude = src.Latitude;
-            this.Longitude = src.Longitude;
-            this.Country = src.Country;
+            dest.Id = src.Id;
+            AddressesPart.Copy(dest, src);
+        }
+
+        public static void Copy(IAddress dest, IAddress src)
+        {
+            AddressesPart.MapData(dest, src);
+        }
+
+        public static void MapData(IAddress dest, IAddress src)
+        {
+            dest.ModifiedOn = src.ModifiedOn;
+            dest.CreatedOn = src.CreatedOn;
+            dest.Address1 = src.Address1;
+            dest.Address2 = src.Address2;
+            dest.Address3 = src.Address3;
+            dest.Address4 = src.Address4;
+            dest.City = src.City;
+            dest.State = src.State;
+            dest.ZipCode = src.ZipCode;
+            dest.Latitude = src.Latitude;
+            dest.Longitude = src.Longitude;
+            dest.Country = src.Country;
 
         }
+
+
 
 
         

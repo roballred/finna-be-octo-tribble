@@ -22,7 +22,7 @@ namespace WAA.Routes
             new HttpRouteDescriptor {
                 Name = "MembershipRoute",
                 Priority = 5,
-                RouteTemplate = "api/membership/{controller}/{id}",
+                RouteTemplate = "api/WAA/{controller}/{id}",
                 Defaults = new {
                     area = "WAA",
                     id = RouteParameter.Optional
