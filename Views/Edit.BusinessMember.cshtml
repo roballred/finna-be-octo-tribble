@@ -24,8 +24,10 @@
             <div id="dashboard-control">
 
                 <div id="dashboard-control-content" class="col-sm-6 col-sm-offset-3">
-                    <div id="dashboard-control-header">
-                        <p>Business Membership Information</p>
+                    <div id="dashboard-control-header" style="margin:10px;">
+                        <h3>Business Membership Information</h3>
+                        <a ng-click="Cancel()" href=@Url.Action("ListBusinesses", "Admin", new { area = "WAA" })>&lt;-- Return to List of Business Members</a>
+                        <br />
                     </div>
                     <ng-form name="Registration_form" class="validation-form" novalidate>
                         <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.CompanyName.$invalid,  'has-success' : (Registration_form.CompanyName.$valid)}">

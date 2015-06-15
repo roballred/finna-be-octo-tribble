@@ -25,7 +25,10 @@
 
                 <div id="dashboard-control-content" class="col-sm-6 col-sm-offset-3">
                     <div id="dashboard-control-header">
-                        <p>Individual Membership Information</p>
+                        <h3>Individual Membership Information</h3>
+                        <a ng-click="Cancel()" href=@Url.Action("ListMembers", "Admin", new { area = "WAA" })>&lt;-- Return to List of Individual Members</a>
+                        <br />
+
                     </div>
                     <ng-form name="Registration_form" class="validation-form" novalidate>
                         <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.FirstName.$invalid,  'has-success' : (Registration_form.FirstName.$valid)}">
@@ -177,6 +180,8 @@
             window.location = szFinishedRedirect;
 
         }
+
+
 
 
         $scope.OpenDatePicker = function ($event) {

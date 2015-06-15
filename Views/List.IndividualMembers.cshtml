@@ -22,8 +22,10 @@
             <div id="dashboard-control">
 
                 <div id="dashboard-control-content">
-                    <div id="dashboard-control-header">
-                        <p>Individual Members</p>
+                    <div id="dashboard-control-header" style="margin:10px;">
+                        <h3>Individual Members</h3>
+                        <a href=@Url.Action("Index", "Admin" , new { area="WAA" })>&lt;-- Return to Admin</a>
+                        <br />
                     </div>
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-striped table-hover responsive">
