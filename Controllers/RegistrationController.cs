@@ -22,18 +22,21 @@ namespace WAA.Controllers
         private readonly IMembersService m_objMembersService;
         private IOrchardServices _orchardServices;
         private ITaxonomyService _taxonomyService;
+        private readonly IMemberLookupService m_objMemberLookupService;
 
 
         public RegistrationController(IOrchardServices orchardServices,
             IAddressesService objAddressesService,
             IMembersService objMembersService,
-            ITaxonomyService taxonomyService)
+            ITaxonomyService taxonomyService,
+            IMemberLookupService objMemberLookupService)
             : base(orchardServices)
         {
             _orchardServices = orchardServices;
             m_objAddressesService = objAddressesService;
             m_objMembersService = objMembersService;
             _taxonomyService = taxonomyService;
+            m_objMemberLookupService = objMemberLookupService;
         }
 
 
@@ -55,11 +58,18 @@ namespace WAA.Controllers
         [Themed]
         public ActionResult Individual()
         {
+
             //if (!IsAuthorized()) return new HttpUnauthorizedResult();
             if (IsAuthorized())
             {
-                //check to see if they  have registered in memberlookup
-                return RedirectToAction("Flightdeck", "Member");
+
+                var memberId = m_objMemberLookupService.FindMember(this.GetUserEmail());
+
+                if (memberId > 0)
+                {
+                    //check to see if they  have registered in memberlookup
+                    return RedirectToAction("Flightdeck", "Members");
+                }
 
             }
 

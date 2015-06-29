@@ -63,7 +63,18 @@ namespace WAA.Controllers
             if (objRegisterBusinessViewModel != null)
             {
 
-                var businessMember = m_objBusinessService.Get(objRegisterBusinessViewModel.Id);
+                BusinessPart businessMember = null;
+                if(objRegisterBusinessViewModel.Id == 0)
+                {
+                    businessMember = m_objBusinessService.Factory();
+                    var userLookup = m_objMemberLookupService.Factory(objRegisterBusinessViewModel.ContactInfo.EmailAddress);
+                    userLookup.BusinessId = businessMember.Id;
+                }
+                else
+                {
+                    businessMember = m_objBusinessService.Get(objRegisterBusinessViewModel.Id);
+                }
+                 
                 if (businessMember != null)
                 {
                     BusinessPart.MapData(businessMember, objRegisterBusinessViewModel);

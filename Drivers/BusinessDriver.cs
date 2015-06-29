@@ -23,8 +23,8 @@ namespace WAA.Drivers
 
         protected override DriverResult Display(BusinessPart part, string displayType, dynamic shapeHelper)
         {
-
-            return ContentShape("Parts_Producers_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Business", Model: part, Prefix: Prefix));
+            return ContentShape("Parts_Business", () => shapeHelper.Parts_Business());
+            //return ContentShape("Parts_Producers_Edit", () => shapeHelper.EditorTemplate(TemplateName: "Business", Model: part, Prefix: Prefix));
 
         }
 

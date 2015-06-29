@@ -1,0 +1,157 @@
+﻿@model WAA.ViewModels.RegisterBusinessViewModel
+@{
+
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+
+    Script.Include("//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js").AtHead();
+
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-route.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js").AtHead();
+
+
+}
+
+
+<div id="layout-dashboard">
+
+
+    <div id="dashboard" ng-app="registrationApp">
+        <div id="dashboard-content" ng-controller="registrationCtrl">
+
+            <div id="dashboard-control">
+
+                <div id="dashboard-control-content" class="col-sm-6 col-sm-offset-3">
+                    <div id="dashboard-control-header" style="margin:10px;">
+                        <h3>Business Membership Information</h3>
+                        <a ng-click="Cancel()" href=@Url.Action("ListBusinesses", "Admin", new { area = "WAA" })>&lt;-- Return to List of Business Members</a>
+                        <br />
+                    </div>
+                    <ng-form name="Registration_form" class="validation-form" novalidate>
+
+                        @Html.Partial("Edit.BusinessMember")
+
+
+                        <div class="form-group has-feedback validation-group">
+                            <label>Renewal Date</label>
+                            <div class="input-group">
+                                @*<input type="date" ng-model="Registration.RenewalOn | date: 'shortDate'" placeholder="{{Registration.RenewalOn | date:'shortDate'}}" />*@
+                                <input name="StartDateTime" type="text" class="form-control text-box" show-weeks="false" ng-model="Registration.RenewalOn" datepicker-popup="shortDate" datepicker-options=" dateoptions" close-text="Close" />
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback validation-group">
+                            <label>Categories</label>
+                            <div ng-repeat="category in Registration.Category" class="checkbox-inline">
+                                <label>
+                                    <input type="checkbox" ng-model="category.isSelected">{{category.Name}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <alert type="danger" ng-show="IsErrorUploadingData">{{ErrorUploadingMessage}}</alert>
+                            <alert type="danger" class="bg-danger" ng-show="IsFinalinValid">{{FinalValidationMessage}}</alert>
+                        </div>
+
+                        <div class="btn-group btn-group-lg">
+                            <button class="btn btn-default" ng-disabled="IsUploadingData == true" type="button" ng-click="PostData()">@T("Save")</button>
+                            <button class="btn btn-default" ng-click="Cancel()">@T("Cancel")</button>
+                            <img ng-show="IsUploadingData" src="http://x4wordpress.cloudapp.net/wp-content/uploads/2014/10/spinner.gif" />
+
+                        </div>
+
+
+                    </ng-form>
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+
+
+    var registrationApp = angular.module('registrationApp', ['ui.bootstrap']);
+
+    registrationApp.controller('registrationCtrl',  ['$scope', '$http', function ($scope, $http) {
+
+        $scope.IsErrorUploadingData = false;
+        $scope.IsFinalinValid = false;
+        $scope.IsUploadingData = false;
+
+        $scope.ErrorUploadingMessage = '';
+        $scope.FinalValidationMessage = '';
+
+        $scope.Registration = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        $scope.Countries = ["United States", "Canada", "Mexico"];
+        window.onbeforeunload = function () {
+            return "Leaving will result in the loss of any unsaved data? ";
+        };
+
+        $scope.Cancel = function () {
+            //var r = confirm("Are you sure you want to cancel and lose any unsaved work?");
+            //if (r == true) {
+            //    $(window).unbind('beforeunload');
+            //    window.location = szFinishedRedirect;
+            //}
+            window.onbeforeunload = null;
+            window.location = $scope.Registration.RedirectUrl;
+
+        }
+
+
+        $scope.OpenDatePicker = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            showWeeks: 'false'
+        };
+
+        $scope.PostData = function () {
+
+
+            $scope.Registration_form.$submitted = true;
+            if($scope.Registration_form.$valid)
+            {
+                var objData = JSON.stringify($scope.Registration);
+                $scope.IsUploadingData = true;
+                $scope.IsFinalinValid = false;
+
+                $http.post($scope.Registration.PostBackUrl, objData).
+                    success(function (data, headers) {
+                        window.onbeforeunload = null;
+                        window.location = $scope.Registration.RedirectUrl;
+                        console.log(headers());
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log("error");
+                        $scope.ErrorUploadingMessage = 'Error connecting with server, please try again soon.';
+                        $scope.IsUploadingData = false;
+                        $scope.IsFinalinValid = true;
+
+                    });
+
+            }
+            else{
+                $scope.FinalValidationMessage = "Please fix invalid entries";
+                $scope.IsFinalinValid = true;
+            }
+        }
+
+
+    }]);
+
+
+
+</script>

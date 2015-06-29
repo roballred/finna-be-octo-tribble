@@ -1,6 +1,7 @@
 ﻿using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Data;
+using Orchard.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,9 @@ namespace WAA.Services
 {
     public interface IMemberLookupService : IDependency
     {
+        int FindMember();
         int FindMember(string szEmail);
+        int FindBusiness();
         int FindBusiness(string szEmail);
         MemberLookupPart Factory(string szEmail);
     }
@@ -29,6 +32,27 @@ namespace WAA.Services
             m_objLookupRepository = objLookupRepository;
         }
 
+        public int FindMember()
+        {
+            int nResult = -1;
+            try
+            {
+                IUser usertItem = _orchardServices.WorkContext.CurrentUser;
+                if (usertItem is IUser)
+                {
+                    nResult = this.FindMember(usertItem.Email);
+                }
+
+
+            }
+            catch 
+            {
+            }
+
+            return nResult;
+        }
+
+
         public int FindMember(string szEmail)
         {
             int nResult = -1;
@@ -42,6 +66,27 @@ namespace WAA.Services
 
             }
             catch { }
+
+            return nResult;
+        }
+
+
+        public int FindBusiness()
+        {
+            int nResult = -1;
+            try
+            {
+                IUser usertItem = _orchardServices.WorkContext.CurrentUser;
+                if (usertItem is IUser)
+                {
+                    nResult = this.FindBusiness(usertItem.Email);
+                }
+
+
+            }
+            catch
+            {
+            }
 
             return nResult;
         }
@@ -72,15 +117,20 @@ namespace WAA.Services
         /// 
         public MemberLookupPart Factory(string szEmail)
         {
-            var objMemberLookupServiceItem = _orchardServices.ContentManager.New("MemberLookupServiceItem");
+            var objUserLookup = _orchardServices.ContentManager.Query<MemberLookupPart, MemberLookup>().Where(x => x.EmailAddress == szEmail).List().FirstOrDefault();
 
-            _orchardServices.ContentManager.Create(objMemberLookupServiceItem, VersionOptions.Published);
+            if(objUserLookup == null)
+            {
+                var objMemberLookupServiceItem = _orchardServices.ContentManager.New("MemberLookupServiceItem");
 
-            var objMemberLookupPart = objMemberLookupServiceItem.As<MemberLookupPart>();
+                _orchardServices.ContentManager.Create(objMemberLookupServiceItem, VersionOptions.Published);
 
-            objMemberLookupPart.EmailAddress = szEmail;
+                objUserLookup = objMemberLookupServiceItem.As<MemberLookupPart>();
 
-            return objMemberLookupPart;
+                objUserLookup.EmailAddress = szEmail;
+
+            }
+            return objUserLookup;
 
         }
 

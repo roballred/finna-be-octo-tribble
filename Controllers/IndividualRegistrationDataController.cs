@@ -65,7 +65,13 @@ namespace WAA.Controllers
                 //register the users with orchard
                 var registrationSettings = _orchardServices.WorkContext.CurrentSite.As<RegistrationSettingsPart>();
 
-                var user = _membershipService.CreateUser(new CreateUserParams(objRegisterViewModel.ContactInfo.EmailAddress, objRegisterViewModel.Password, objRegisterViewModel.ContactInfo.EmailAddress, null, null, false));
+                IUser user = _orchardServices.WorkContext.CurrentUser;
+                if (user == null)
+                {
+                    user = _membershipService.CreateUser(new CreateUserParams(objRegisterViewModel.ContactInfo.EmailAddress, objRegisterViewModel.Password, objRegisterViewModel.ContactInfo.EmailAddress, null, null, false));
+                }
+
+                
                 if(user != null)
                 {
                     _authenticationService.SignIn(user, false /* createPersistentCookie */);
@@ -110,6 +116,8 @@ namespace WAA.Controllers
 
             return response;
         }
+
+
 
     }
 }

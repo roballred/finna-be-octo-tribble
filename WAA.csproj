@@ -115,6 +115,9 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\ui-bootstrap-tpls.min.js" />
+    <Content Include="Views\LogOn.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
@@ -196,9 +199,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LogOn.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Registration.Business.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +239,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Edit.IndividualMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Parts.Business.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin.EditIndividualMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User.EditIndividualMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin.EditBusinessMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\UserEditBusinessMember.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,233 +1,70 @@
-﻿@model WAA.ViewModels.RegisterIndividualViewModel
-@{
-
-    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
-    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
-    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
-
-    Script.Include("//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js").AtHead();
-
-    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular.min.js").AtHead();
-    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-route.min.js").AtHead();
-    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js").AtHead();
-
-
-}
-
-
-<div id="layout-dashboard">
-
-
-    <div id="dashboard" ng-app="registrationApp">
-        <div id="dashboard-content" ng-controller="registrationCtrl">
-
-            <div id="dashboard-control">
-
-                <div id="dashboard-control-content" class="col-sm-6 col-sm-offset-3">
-                    <div id="dashboard-control-header">
-                        <h3>Individual Membership Information</h3>
-                        <a ng-click="Cancel()" href=@Url.Action("ListMembers", "Admin", new { area = "WAA" })>&lt;-- Return to List of Individual Members</a>
-                        <br />
-
-                    </div>
-                    <ng-form name="Registration_form" class="validation-form" novalidate>
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.FirstName.$invalid,  'has-success' : (Registration_form.FirstName.$valid)}">
-                            <label>Contact First Name</label>
-                            <input name="FirstName" required ng-minlength="3" class="form-control text-box single-line" ng-model="Registration.Person.FirstName" type="text">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.FirstName.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.FirstName.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                        </div>
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.LastName.$invalid,  'has-success' : (Registration_form.LastName.$valid)}">
-                            <label>Contact Last Name</label>
-                            <input name="LastName" required ng-minlength="3" class="form-control text-box single-line" ng-model="Registration.Person.LastName" type="text">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.LastName.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.LastName.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                        </div>
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.EmailAddress.$invalid,  'has-success' : (Registration_form.EmailAddress.$valid)}">
-                            <label>Email Address</label>
-                            <input name="EmailAddress" required ng-minlength="2" class="form-control text-box single-line" ng-model="Registration.ContactInfo.EmailAddress" type="text">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.EmailAddress.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.EmailAddress.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                        </div>
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.Address1.$invalid,  'has-success' : (Registration_form.Address1.$valid)}">
-                            <label>Street Address</label>
-                            <input name="Address1" required ng-minlength="2" class="form-control text-box single-line" ng-model="Registration.Address.Address1" type="text">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.Address1.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.Address1.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                            <input class="form-control text-box single-line" ng-model="Registration.Address.Address2" type="text">
-                        </div>
-
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.City.$invalid,  'has-success' : (Registration_form.City.$valid)}">
-                            <label>City</label>
-                            <input name="City" class="form-control text-box single-line" required ng-model="Registration.Address.City" type="text">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.City.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.City.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                        </div>
-
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.State.$invalid,  'has-success' : (Registration_form.State.$valid)}">
-                            <label>State</label>
-                            <select name="State" class="form-control" ng-model="Registration.Address.State" required ng-options="state.Code as state.Code for state in Registration.States"></select>
-                            @*<span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                                <span class="form-control-feedback" ng-cloak ng-show="Registration_form.State.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                                <span class="form-control-feedback" ng-cloak ng-show="Registration_form.State.$invalid && Registration_form.submitted"><strong>!</strong></span>*@
-                        </div>
-
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.ZipCode.$invalid,  'has-success' : (Registration_form.ZipCode.$valid)}">
-                            <label>Zip Code</label>
-                            <input name="ZipCode" class="form-control text-box single-line" required ng-model="Registration.Address.ZipCode" type="text" ng-pattern="/^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$/">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.ZipCode.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.ZipCode.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                        </div>
-
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.Country.$invalid,  'has-success' : (Registration_form.Country.$valid)}">
-                            <label>Country</label>
-                            <select name="Country" class="form-control" ng-model="Registration.Address.Country" ng-options="v for v in Countries"></select>
-                            @*<span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                                <span class="form-control-feedback" ng-cloak ng-show="Registration_form.Country.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                                <span class="form-control-feedback" ng-cloak ng-show="Registration_form.Country.$invalid && Registration_form.submitted"><strong>!</strong></span>*@
-
-                        </div>
-                        <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.OfficeNumber.$invalid,  'has-success' : (Registration_form.OfficeNumber.$valid)}">
-                            <label>Phone</label>
-                            <input name="OfficeNumber" class="form-control text-box single-line" required ng-model="Registration.ContactInfo.OfficeNumber" placeholder="(555) 555-5555" type="text" ng-pattern="/^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/">
-                            <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.OfficeNumber.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.OfficeNumber.$invalid && Registration_form.submitted"><strong>!</strong></span>
-                        </div>
-
-                        <div class="form-group has-feedback validation-group">
-                            <label>Renewal Date</label>
-                            <div class="input-group">
-                                @*<input type="date" ng-model="Registration.RenewalOn | date: 'shortDate'" placeholder="{{Registration.RenewalOn | date:'shortDate'}}" />*@
-                                <input name="StartDateTime" type="text" class="form-control text-box" show-weeks="false" ng-model="Registration.RenewalOn" datepicker-popup="shortDate" datepicker-options=" dateoptions" close-text="Close" />
-                            </div>
-                        </div>
-
-
-                        <div class="form-group has-feedback validation-group">
-                            <label>Categories</label>
-                            <div ng-repeat="category in Registration.Category" class="checkbox-inline">
-                                <label>
-                                    <input type="checkbox" ng-model="category.isSelected">{{category.Name}}
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-12">
-                            <alert type="danger" ng-show="IsErrorUploadingData">{{ErrorUploadingMessage}}</alert>
-                            <alert type="danger" class="bg-danger" ng-show="IsFinalinValid">{{FinalValidationMessage}}</alert>
-                        </div>
-
-                        <div class="btn-group btn-group-lg">
-                            <button class="btn btn-default" ng-disabled="IsUploadingData == true" type="button" ng-click="PostData()">@T("Save")</button>
-                            <button class="btn btn-default" ng-click="Cancel()">@T("Cancel")</button>
-                            <img ng-show="IsUploadingData" src="http://x4wordpress.cloudapp.net/wp-content/uploads/2014/10/spinner.gif" />
-
-                        </div>
-
-                        @*@Html.TextBoxFor(m => m.Address.City, new { @class = "text small" })*@
-
-                    </ng-form>
-
-
-
-                </div>
-
-            </div>
-        </div>
-
+﻿<ng-form name="Registration_form" class="validation-form" novalidate>
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.FirstName.$invalid,  'has-success' : (Registration_form.FirstName.$valid)}">
+        <label>First Name</label>
+        <input name="FirstName" required ng-minlength="3" class="form-control text-box single-line" ng-model="Registration.Person.FirstName" type="text">
+        <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.FirstName.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.FirstName.$invalid && Registration_form.submitted"><strong>!</strong></span>
     </div>
-</div>
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.LastName.$invalid,  'has-success' : (Registration_form.LastName.$valid)}">
+        <label>CLast Name</label>
+        <input name="LastName" required ng-minlength="3" class="form-control text-box single-line" ng-model="Registration.Person.LastName" type="text">
+        <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.LastName.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.LastName.$invalid && Registration_form.submitted"><strong>!</strong></span>
+    </div>
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.EmailAddress.$invalid,  'has-success' : (Registration_form.EmailAddress.$valid)}">
+        <label>Email Address</label>
+        <input name="EmailAddress" required ng-minlength="2" class="form-control text-box single-line" ng-model="Registration.ContactInfo.EmailAddress" type="text">
+        <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.EmailAddress.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.EmailAddress.$invalid && Registration_form.submitted"><strong>!</strong></span>
+    </div>
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.Address1.$invalid,  'has-success' : (Registration_form.Address1.$valid)}">
+        <label>Street Address</label>
+        <input name="Address1" required ng-minlength="2" class="form-control text-box single-line" ng-model="Registration.Address.Address1" type="text">
+        <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.Address1.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.Address1.$invalid && Registration_form.submitted"><strong>!</strong></span>
+        <input class="form-control text-box single-line" ng-model="Registration.Address.Address2" type="text">
+    </div>
 
-<script>
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.City.$invalid,  'has-success' : (Registration_form.City.$valid)}">
+        <label>City</label>
+        <input name="City" class="form-control text-box single-line" required ng-model="Registration.Address.City" type="text">
+        <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.City.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.City.$invalid && Registration_form.submitted"><strong>!</strong></span>
+    </div>
 
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.State.$invalid,  'has-success' : (Registration_form.State.$valid)}">
+        <label>State</label>
+        <select name="State" class="form-control" ng-model="Registration.Address.State" required ng-options="state.Code as state.Code for state in Registration.States"></select>
+        @*<span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.State.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+            <span class="form-control-feedback" ng-cloak ng-show="Registration_form.State.$invalid && Registration_form.submitted"><strong>!</strong></span>*@
+    </div>
 
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.ZipCode.$invalid,  'has-success' : (Registration_form.ZipCode.$valid)}">
+        <label>Zip Code</label>
+        <input name="ZipCode" class="form-control text-box single-line" required ng-model="Registration.Address.ZipCode" type="text" ng-pattern="/^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$/">
+        <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.ZipCode.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.ZipCode.$invalid && Registration_form.submitted"><strong>!</strong></span>
+    </div>
 
-    var registrationApp = angular.module('registrationApp', ['ui.bootstrap']);
-
-    registrationApp.controller('registrationCtrl',  ['$scope', '$http', function ($scope, $http) {
-
-        $scope.IsErrorUploadingData = false;
-        $scope.IsFinalinValid = false;
-        $scope.IsUploadingData = false;
-
-        $scope.ErrorUploadingMessage = '';
-        $scope.FinalValidationMessage = '';
-
-        $scope.Registration = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
-        $scope.Countries = ["United States", "Canada", "Mexico"];
-
-        var szPostData = "@Url.HttpRouteUrl("MembershipRoute", new { controller = "EditIndividualData" })";
-
-        var szFinishedRedirect = "@Url.Action("ListMembers", "Admin", new { area = "WAA" })";
-
-        window.onbeforeunload = function () {
-            return "Leaving will result in the loss of any unsaved data? ";
-        };
-
-        $scope.Cancel = function () {
-            //var r = confirm("Are you sure you want to cancel and lose any unsaved work?");
-            //if (r == true) {
-            //    $(window).unbind('beforeunload');
-            //    window.location = szFinishedRedirect;
-            //}
-            window.onbeforeunload = null;
-            window.location = szFinishedRedirect;
-
-        }
-
-
-
-
-        $scope.OpenDatePicker = function ($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-        }
-
-        $scope.dateOptions = {
-            formatYear: 'yy',
-            showWeeks: 'false'
-        };
-
-        $scope.PostData = function () {
-
-
-            $scope.Registration_form.$submitted = true;
-            if($scope.Registration_form.$valid)
-            {
-                var objData = JSON.stringify($scope.Registration);
-                $scope.IsUploadingData = true;
-                $scope.IsFinalinValid = false;
-
-                $http.post(szPostData, objData).
-                    success(function (data, headers) {
-                        window.onbeforeunload = null;
-                        window.location = szFinishedRedirect;
-                        console.log(headers());
-                    }).
-                    error(function (data, status, headers, config) {
-                        console.log("error");
-                        $scope.ErrorUploadingMessage = 'Error connecting with server, please try again soon.';
-                        $scope.IsUploadingData = false;
-                        $scope.IsFinalinValid = true;
-
-                    });
-
-            }
-            else{
-                $scope.FinalValidationMessage = "Please fix invalid entries";
-                $scope.IsFinalinValid = true;
-            }
-        }
-
-
-    }]);
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.Country.$invalid,  'has-success' : (Registration_form.Country.$valid)}">
+        <label>Country</label>
+        <select name="Country" class="form-control" ng-model="Registration.Address.Country" ng-options="v for v in Countries"></select>
+    </div>
+    <div class="form-group has-feedback validation-group" ng-class="{ 'has-error' : Registration_form.OfficeNumber.$invalid,  'has-success' : (Registration_form.OfficeNumber.$valid)}">
+        <label>Phone</label>
+        <input name="OfficeNumber" class="form-control text-box single-line" required ng-model="Registration.ContactInfo.OfficeNumber" placeholder="(555) 555-5555" type="text" ng-pattern="/^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/">
+        <span class="form-control-feedback" ng-cloak ng-show="!Registration_form.submitted"><strong>*</strong></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.OfficeNumber.$valid  && Registration_form.submitted"><i class="glyphicon glyphicon-ok"></i></span>
+        <span class="form-control-feedback" ng-cloak ng-show="Registration_form.OfficeNumber.$invalid && Registration_form.submitted"><strong>!</strong></span>
+    </div>
 
 
 
-</script>
+</ng-form>

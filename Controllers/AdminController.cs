@@ -41,6 +41,14 @@ namespace WAA.Controllers
             return View("WaaAdmin");
         }
 
+        [Themed]
+        public ActionResult AdminCreateBusiness()
+        {
+            RegisterBusinessViewModel objRegisterBusinessViewModel = new RegisterBusinessViewModel();
+            objRegisterBusinessViewModel.States = m_objAddressesService.GetStates();
+
+            return View("Edit.BusinessMember", objRegisterBusinessViewModel);
+        }
 
         [Themed]
         public ActionResult EditBusiness(int Id)
@@ -78,7 +86,7 @@ namespace WAA.Controllers
 
 
 
-            return View("Edit.BusinessMember", objRegisterBusinessViewModel);
+            return View("Admin.EditBusinessMember", objRegisterBusinessViewModel);
         }
 
          [Themed]
@@ -107,6 +115,15 @@ namespace WAA.Controllers
             return View("List.BusinessMembers", objBusniessDirectoryViewModel);
         }
 
+        [Themed]
+         public ActionResult AdminCreateMember()
+         {
+             RegisterIndividualViewModel objRegisterIndividualViewModel = new RegisterIndividualViewModel();
+
+             objRegisterIndividualViewModel.States = m_objAddressesService.GetStates();
+
+             return View("Edit.IndividualMember", objRegisterIndividualViewModel);
+         }
 
          [Themed]
          public ActionResult EditMember(int Id)
@@ -121,6 +138,8 @@ namespace WAA.Controllers
 
              objRegisterIndividualViewModel.States = m_objAddressesService.GetStates();
 
+             objRegisterIndividualViewModel.PostBackUrl = Url.HttpRouteUrl("MembershipRoute", new { controller = "EditIndividualData" });
+             objRegisterIndividualViewModel.RedirectUrl = Url.Action("ListMembers", "Admin", new { area = "WAA" });
              //var taxonomy = _taxonomyService.GetTaxonomyByName("IndividualCategories");
 
              //if (taxonomy != null)
@@ -144,10 +163,10 @@ namespace WAA.Controllers
 
 
 
-             return View("Edit.IndividualMember", objRegisterIndividualViewModel);
+             return View("Admin.EditIndividualMember", objRegisterIndividualViewModel);
          }
 
-
+        [Themed]
         public ActionResult ListMembers()
         {
 
