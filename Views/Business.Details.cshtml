@@ -1,0 +1,53 @@
+﻿@model WAA.ViewModels.BusinessDetailsViewModel
+@{
+
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+
+    Script.Include("//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js").AtHead();
+
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-route.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js").AtHead();
+
+
+}
+
+
+<div id="layout-dashboard">
+    <div id="dashboard" ng-app="App">
+        <div id="dashboard-content" ng-controller="Ctrl">
+
+            <div id="dashboard-control">
+
+                <div id="dashboard-control-content" class="col-sm-6 col-sm-offset-3">
+                    <div id="dashboard-control-header">
+                        <h3>{{BusinessData.CompanyName}}</h3>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+
+
+    var registrationApp = angular.module('App', ['ui.bootstrap']);
+
+    registrationApp.controller('Ctrl',  ['$scope', '$http', function ($scope, $http) {
+
+
+        $scope.BusinessData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+
+
+    }]);
+
+
+
+</script>

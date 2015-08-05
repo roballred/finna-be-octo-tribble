@@ -18,49 +18,85 @@
 
 <div id="layout-dashboard" ng-app="directoryApp">
     <div id="dashboard" ng-controller="directoryCtrl">
-
         <div id="dashboard-content">
+            <h1>Business Directory</h1>
 
-            <div id="dashboard-control">
-                <div id="dashboard-control-content">
-                    <div id="dashboard-control-tools">
-
-                    </div>
-                    <div id="dashboard-control-header">
-                        <p>Business Directory</p>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
-                            <tr><th>Search</th></tr>
-                            <tr>
-                                <td>
-                                    <div class="input-group">
-                                        <input class="form-control text-box" ng-model="query" type="text" />
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-condensed table-bordered table-striped table-hover responsive">
-                            <tr><th><a href="" ng-click="reverse = !reverse">Company Name</a></th><th>Phone</th><th>Website</th></tr>
-                            <tr ng-repeat="eachBusiness in Businesses  | filter:search | filter:query | orderBy:'CompanyName':reverse">
-                                <td><span>{{eachBusiness.CompanyName}}</span></td>
-                                <td><span>{{eachBusiness.ContactInfo.OfficeNumber}}</span></td>
-                                <td><span>{{eachBusiness.WebsiteUrl}}</span></td>
-                            </tr>
-
-                        </table>
-                    </div>
-
+            <div class="col-sm-6">
+                <p>
+                    Search membership database and click results below for expanded
+                    listing including company contact, details & member offers.
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-bordered table-striped table-hover responsive">
+                        <tr><th>Search</th></tr>
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <input class="form-control text-box" ng-model="query" type="text" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
 
                 </div>
 
             </div>
+            <div class="col-sm-6 businessIcons">
+                <img src="http://waamedia.blob.core.windows.net/media/Default/SiteMedia/g5150.png" />
+                <div>
+                    <table>
+                        <tr><th>Icons:</th></tr>
+                        <tr>
+                            <td><img src="http://waamedia.blob.core.windows.net/media/Default/SiteMedia/dollarSign.png" /></td>
+                            <td><span>Member offers</span></td>
+                        </tr>
+                        <tr>
+                            <td><img src="http://waamedia.blob.core.windows.net/media/Default/SiteMedia/star.png" /></td>
+                            <td><span>Special Offers</span></td>
+                        </tr>
+                        <tr>
+                            <td><img src="http://waamedia.blob.core.windows.net/media/Default/SiteMedia/handShake.png" /></td>
+                            <td><span>Trade Show Exhibitor</span></td>
+                        </tr>
+                        <tr>
+                            <td><img src="http://waamedia.blob.core.windows.net/media/Default/SiteMedia/megaPhone.png" /></td>
+                            <td><span>Conference Speaker</span></td>
+                        </tr>
+                    </table>
 
+                </div>
+
+                <img src="http://waamedia.blob.core.windows.net/media/Default/SiteMedia/g5150.png" />
+            </div>
+            <div class="col-sm-12">
+                <div class="table-responsive " >
+                    <table class="table table-condensed table-bordered table-hover responsive">
+                        <tr ng-repeat="eachBusiness in Businesses | filter:search | filter:query | orderBy:'CompanyName' | limitTo: limit">
+
+                            <td>
+                                <a href="@(String.Format("{0}/{1}", @Url.Action("Details", "Business", new { area = "WAA" }), "{{eachBusiness.Id}}"))">
+                                    <span>{{eachBusiness.CompanyName}}</span>
+
+                                </a>
+                            </td>
+                            <td><span>{{eachBusiness.Address.City}}</span></td>
+                            <td><span>{{eachBusiness.ContactInfo.OfficeNumber | phonenumber}}</span></td>
+                            <td><span>{{eachBusiness.Description| cut:true:20:'...'}}</span></td>
+
+                        </tr>
+
+                    </table>
+                    <button ng-show="limit < Businesses.length"
+                            ng-click="limit = limit +2">
+                        show more...
+                    </button>
+                </div>
+
+            </div>
 
         </div>
+
+        <div id="Tools">@Html.Partial("Business.Toolbar")</div>
 
     </div>
 
@@ -79,16 +115,76 @@
 
         $scope.Businesses = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Businesses));
 
-        $scope.OpenDatePicker = function ($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-        }
 
         $scope.IsShowingStartDate = false;
 
+        $scope.limit = 2;
+
     }]);
 
+    eventApp.filter('cut', function () {
+        return function (value, wordwise, max, tail) {
+            if (!value) return '';
 
+            max = parseInt(max, 10);
+            if (!max) return value;
+            if (value.length <= max) return value;
+
+            value = value.substr(0, max);
+            if (wordwise) {
+                var lastspace = value.lastIndexOf(' ');
+                if (lastspace != -1) {
+                    value = value.substr(0, lastspace);
+                }
+            }
+
+            return value + (tail || ' …');
+        };
+    });
+
+    eventApp.filter('phonenumber', function() {
+        /*
+	    Format phonenumber as: c (xxx) xxx-xxxx
+	    	or as close as possible if phonenumber length is not 10
+	    	if c is not '1' (country code not USA), does not use country code
+	    */
+
+        return function (number) {
+            /*
+		    param {Number | String} number - Number that will be formatted as telephone number
+		    Returns formatted number: (###) ###-####
+		    	if number.length < 4: ###
+		    	else if number.length < 7: (###) ###
+		    Does not handle country codes that are not '1' (USA)
+		    */
+            if (!number) { return ''; }
+
+            number = String(number);
+
+            number = number.replace(/[^0-9]*/g,'');
+
+            // Will return formattedNumber.
+            // If phonenumber isn't longer than an area code, just show number
+            var formattedNumber = number;
+
+            // if the first character is '1', strip it out and add it back
+            var c = (number[0] == '1') ? '1 ' : '';
+            number = number[0] == '1' ? number.slice(1) : number;
+
+            // # (###) ###-#### as c (area) front-end
+            var area = number.substring(0,3);
+            var front = number.substring(3, 6);
+            var end = number.substring(6, 10);
+
+            if (front) {
+                formattedNumber = (c + "(" + area + ") " + front);
+            }
+            if (end) {
+                formattedNumber += ("-" + end);
+            }
+            return formattedNumber;
+        };
+    });
 
 
 

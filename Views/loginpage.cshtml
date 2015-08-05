@@ -1,0 +1,116 @@
+﻿@model WAA.ViewModels.BusniessDirectoryViewModel
+@{
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
+
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    Style.Include("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js").AtHead();
+
+    Script.Include("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js").AtHead();
+    //Style.Include("../Styles/bootstrap.min.css");
+    //Style.Include("../Styles/bootstrap-glyphicons.css");
+    //Script.Include("../Scripts/angular.min.js").AtHead();
+    //Script.Include("../Scripts/ui-bootstrap-tpls.min.js").AtHead();
+    //Script.Require("jQuery");
+}
+
+
+
+
+
+<div id="layout-dashboard" ng-app="App">
+    <div id="dashboard" ng-controller="Ctrl">
+
+        <h2>WAA Login</h2>
+
+        <div style="padding-top: 30px;">
+            <div class="col-sm-4">
+                <p>Manage or renew your membership and access members-only content</p>
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("LogOn", new { ReturnUrl = Request.QueryString["ReturnUrl"] })))
+                {
+                    <div class="form-group">
+                        <label for="username-email">@T("Email")</label>
+                        @Html.TextBox("userNameOrEmail", "", new { id = "username-email", autofocus = "autofocus", @class = "form-control text-box single-line" })
+                        @Html.ValidationMessage("userNameOrEmail")
+
+                    </div>
+                    <div class="form-group">
+                        <label for="password">@T("Password")</label>
+                        @Html.Password("password", "", new { @class = "form-control text-box single-line" })
+                        @Html.ValidationMessage("password")
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink(T("Lost your Password?").Text, "RequestLostPassword")
+                    </div>
+                    <div class="btn-group btn-group-lg">
+                        <button class="btn btn-default" type="submit">@T("LOGIN")<i class="fa fa-play" style="margin-left:10px;"></i></button>
+                    </div>
+
+                }
+
+            </div>
+            <div class="col-sm-4">
+                <h2>Create an account</h2>
+                <p>Click here from membership levels</p>
+                <div class="btn-group btn-group-lg">
+                    <button class="btn btn-default" ng-click="registrationLink()" type="button">JOIN THE WAA<i class="fa fa-play" style="margin-left:10px;"></i></button>
+                </div>
+                <p style="margin-top:40px;">
+                    Please contact WAA Member Services <span style="color:#f78e21;">WAA Member Services</span>
+                    if you would like assistance (866-922-7469)
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <h3 style="color:#f78e21;">WING TIPS:</h3>
+                <p>
+                    <strong>NW AVIATION CONFERENCE</strong>
+                    Feb 20-21, 2016
+                    Western WA Fairgrounds
+                    Puyallup, WA
+                    <span style="color:#f78e21;">more</span>
+                </p>
+                <p>
+                    <strong>AVIATION CAREER FORUM</strong>
+                    Feb 19, 2016
+                    Western WA Fairgrounds
+                    Puyallup, WA
+                    <span style="color:#f78e21;">more</span>
+                </p>
+
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+<script>
+
+    var eventApp = angular.module('App', ['ui.bootstrap']);
+
+    var szFinishedRedirect = "@Url.Action("Index", "Dashboard", new { area = "Producer" })";
+
+
+    eventApp.controller('Ctrl', ['$scope', function ($scope) {
+
+        $scope.registrationLink = function () {
+            window.location = "@Url.Action("Individual", "Registration", new { area = "WAA" })";
+
+        }
+
+    }]);
+
+
+
+
+
+
+</script>

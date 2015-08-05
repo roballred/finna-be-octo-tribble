@@ -53,7 +53,7 @@ namespace WAA.Controllers
         [Themed]
         public ActionResult EditBusiness(int Id)
         {
-            RegisterBusinessViewModel objRegisterBusinessViewModel = new RegisterBusinessViewModel();
+            AdminBusinessViewModel objRegisterBusinessViewModel = new AdminBusinessViewModel();
             var businessMember = _businessService.Get(Id);
             BusinessPart.DeepCopy(objRegisterBusinessViewModel, businessMember);
             PersonsPart.DeepCopy(objRegisterBusinessViewModel.Person, businessMember.Person);
@@ -84,7 +84,8 @@ namespace WAA.Controllers
 
             }
 
-
+            objRegisterBusinessViewModel.RedirectUrl = Url.Action("ListBusinesses", "Admin", new { area = "WAA" });
+            objRegisterBusinessViewModel.PostBackUrl = Url.HttpRouteUrl("MembershipRoute", new { controller = "EditBusinessData" });
 
             return View("Admin.EditBusinessMember", objRegisterBusinessViewModel);
         }

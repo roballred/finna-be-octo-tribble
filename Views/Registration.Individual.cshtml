@@ -117,8 +117,8 @@
                             <alert type="danger" class="bg-danger" ng-show="IsFinalinValid">{{FinalValidationMessage}}</alert>
                         </div>
 
-                        <div class="btn-group btn-group-lg">
-                            <button class="btn btn-default" ng-disabled="IsUploadingData == true" type="button" ng-click="PostData()">@T("Save")</button>
+                        <div>
+                            <button class="btn btn-default" ng-disabled="IsUploadingData == true" type="button" ng-click="PostData()">@T("Save")<i class="fa fa-play" style="margin-left:20px;"></i></button>
                             <img ng-show="IsUploadingData" src="http://x4wordpress.cloudapp.net/wp-content/uploads/2014/10/spinner.gif" />
 
                         </div>

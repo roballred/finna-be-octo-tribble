@@ -1,12 +1,109 @@
-﻿
+﻿@model WAA.ViewModels.BusniessDirectoryViewModel
 @{
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
 
-    
+    Style.Include("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+    Style.Include("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js").AtHead();
+    Script.Include("//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js").AtHead();
+
+    Script.Include("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js").AtHead();
+    //Style.Include("../Styles/bootstrap.min.css");
+    //Style.Include("../Styles/bootstrap-glyphicons.css");
+    //Script.Include("../Scripts/angular.min.js").AtHead();
+    //Script.Include("../Scripts/ui-bootstrap-tpls.min.js").AtHead();
+    //Script.Require("jQuery");
 }
 
-this is a test
 
-<div class="section">
-    <h2 class="align_center bottom_margin">“Our team is loving Slack. I’m very excited about it.”</h2>
-    <p class="align_center"><strong>Andy Yaco-Mink</strong>, Director of Engineering, <a href="http://www.buzzfeed.com/" target="new"><strong>BuzzFeed</strong></a></p>
+
+@*<div id="belowHeader">
+    <div id="belowHeaderNav">
+        <nav>
+            <ul class="menu menu-header-menu">
+                <li class="current first"><a href="/OrchardLocal/">Membership</a></li>
+                <li><a href="/OrchardLocal/">Business Directory</a></li>
+                <li><a href="/OrchardLocal/">Pilot Resources</a></li>
+                <li><a href="/OrchardLocal/">Education</a></li>
+                <li><a href="/OrchardLocal/">Community & Events</a></li>
+                <li class="last"><a href="/OrchardLocal/">Advocacy</a></li>
+            </ul>
+        </nav>
+    </div>
+
+</div>*@
+
+
+<div id="layout-dashboard" ng-app="App" style="padding-top: 30px;">
+    <div id="dashboard" ng-controller="Ctrl">
+
+        <h2>Aviation Member Portal</h2>
+
+        <div style="padding-top: 30px;">
+            <div class="icon col-centered col-sm-3">
+                <a href="@Url.Action("business", "registration", new { area = "WAA" })">
+                    <i class="fa fa-plane"></i>
+                    <span>DIRECTORY & DISCOUNTS</span>
+                </a>
+            </div>
+            <div class="icon col-centered col-sm-3">
+                <a href="@Url.Action("individual", "registration", new { area = "WAA" })">
+                    <i class="fa fa-plane"></i>
+                    <span>ADVOCACY & CURRENT OPPORTUNITIES</span>
+                </a>
+            </div>
+            <div class="icon col-centered col-sm-3">
+                <a href="http://google.com">
+                    <i class="fa fa-plane"></i>
+                    <span>NEWS, JOBS & CLASSIFIEDS</span>
+                </a>
+            </div>
+
+            <div class="col-sm-3">
+                <h3 style="color:#f78e21;">WING TIPS:</h3>
+                <p>
+                    <strong>NW AVIATION CONFERENCE</strong>
+                    Feb 20-21, 2016
+                    Western WA Fairgrounds
+                    Puyallup, WA
+                    <span style="color:#f78e21;">more</span>
+                </p>
+                <p>
+                    <strong>AVIATION CAREER FORUM</strong>
+                    Feb 19, 2016
+                    Western WA Fairgrounds
+                    Puyallup, WA
+                    <span style="color:#f78e21;">more</span>
+                </p>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
 </div>
+
+<script>
+
+    var eventApp = angular.module('App', ['ui.bootstrap']);
+
+    var szFinishedRedirect = "@Url.Action("Index", "Dashboard", new { area = "Producer" })";
+
+
+    eventApp.controller('Ctrl', ['$scope', function ($scope) {
+
+
+
+    }]);
+
+
+
+
+
+
+</script>

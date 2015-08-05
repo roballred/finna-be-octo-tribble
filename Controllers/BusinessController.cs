@@ -41,7 +41,7 @@ namespace WAA.Controllers
         // GET: Business
         public ActionResult Index()
         {
-            return View();
+            return this.Flightdeck();
         }
 
         [Themed]
@@ -56,7 +56,7 @@ namespace WAA.Controllers
         [Themed]
         public ActionResult Directory()
         {
-            if (!IsAuthorized()) return new HttpUnauthorizedResult();
+            //if (!IsAuthorized()) return new HttpUnauthorizedResult();
 
             BusniessDirectoryViewModel objBusniessDirectoryViewModel = new BusniessDirectoryViewModel();
 
@@ -68,6 +68,7 @@ namespace WAA.Controllers
 
                 ContactInformationPart.DeepCopy(businessViewModel.ContactInfo, eachBusiness.ContactInformation);
 
+                AddressesPart.DeepCopy(businessViewModel.Address, eachBusiness.Address);
                 //ContactInformationViewModel eachBusiness.ContactInformation
                 var memberTermPart = eachBusiness.ContentItem.As<TermsPart>();
                 var terms = _taxonomyService.GetTermsForContentItem(memberTermPart.Id);
@@ -99,7 +100,7 @@ namespace WAA.Controllers
             return View("Business.Directory", objBusniessDirectoryViewModel);
         }
 
-        public string DirectoryJSON()
+        private string DirectoryJSON()
         {
 
             BusniessDirectoryViewModel objBusniessDirectoryViewModel = new BusniessDirectoryViewModel();
@@ -164,6 +165,8 @@ namespace WAA.Controllers
         [Themed]
         public ActionResult EditProfile(int Id)
         {
+            if (!IsAuthorized()) return new HttpUnauthorizedResult();
+
             RegisterBusinessViewModel objRegisterBusinessViewModel = new RegisterBusinessViewModel();
             var businessMember = m_objIBusinessService.Get(Id);
             BusinessPart.DeepCopy(objRegisterBusinessViewModel, businessMember);
@@ -202,6 +205,21 @@ namespace WAA.Controllers
 
 
             return View("User.EditBusinessMember", objRegisterBusinessViewModel);
+        }
+
+
+        [Themed]
+        public ActionResult Details(int Id)
+        {
+            BusinessDetailsViewModel objBusinessDetailsViewModel = new BusinessDetailsViewModel();
+            var businessData = m_objIBusinessService.Get(Id);
+
+            if (businessData != null)
+            {
+                BusinessPart.DeepCopy(objBusinessDetailsViewModel, businessData);
+            }
+
+            return View("Business.Details", objBusinessDetailsViewModel);
         }
 
 

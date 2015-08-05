@@ -63,7 +63,12 @@ namespace WAA.Controllers
             if (objRegisterBusinessViewModel != null)
             {
 
-                var user = _membershipService.CreateUser(new CreateUserParams(objRegisterBusinessViewModel.ContactInfo.EmailAddress, objRegisterBusinessViewModel.Password, objRegisterBusinessViewModel.ContactInfo.EmailAddress, null, null, false));
+                IUser user = _orchardServices.WorkContext.CurrentUser;
+                if (user == null)
+                {
+                    user = _membershipService.CreateUser(new CreateUserParams(objRegisterBusinessViewModel.ContactInfo.EmailAddress, objRegisterBusinessViewModel.Password, objRegisterBusinessViewModel.ContactInfo.EmailAddress, null, null, false));
+                }
+
                 if (user != null)
                 {
                     _authenticationService.SignIn(user, false /* createPersistentCookie */);
